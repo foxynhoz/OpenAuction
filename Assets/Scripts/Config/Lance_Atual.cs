@@ -19,9 +19,6 @@ public class Lance_Atual : MonoBehaviour
     {
         EntreLance_TXT.text = entreLance.ToString();
         LanceAtual_TXT.text = LanceValue.ToString();
-
-        
-
     }
 
     public void addLance()
