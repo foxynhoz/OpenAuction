@@ -64,27 +64,6 @@ public class Lance_Atual : MonoBehaviour
         UpdateFile();
     }
 
-    public void addLance()
-    {
-        LanceValue += entreLance;
-        I_Lance.text = (LanceValue + entreLance).ToString();
-        UpdateFile();
-
-    }
-    public void subLance()
-    {
-        if (LanceValue > 0f)
-        {
-            LanceValue -= entreLance;
-            I_Lance.text = LanceValue.ToString();
-            UpdateFile();
-            if (LanceValue < 0f)
-            {
-                LanceValue = 0f;
-            }
-        }
-    }
-
     public void changeEntreLance()
     {
         entreLance = float.Parse(I_EntreLance.text);
@@ -94,6 +73,7 @@ public class Lance_Atual : MonoBehaviour
     public void Vendido()
     {
         LanceValue = 0f;
+        I_Lance.text = (LanceValue + entreLance).ToString();
         UpdateFile();
     }
 

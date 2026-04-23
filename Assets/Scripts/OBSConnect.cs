@@ -13,7 +13,7 @@ public class OBSWebSocket : MonoBehaviour
     async void Start()
     {
         await Connect();
-        await Identify(); 
+        await Identify();
     }
 
     async Task Connect()
@@ -57,12 +57,13 @@ public class OBSWebSocket : MonoBehaviour
         await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    async Task Receive()
+    async Task<string> Receive()
     {
         var buffer = new byte[1024];
         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         string msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
         Debug.Log("Recebido: " + msg);
+        return msg;
     }
 
     //FUNÇOES DOS BOTOES
@@ -96,5 +97,64 @@ public class OBSWebSocket : MonoBehaviour
 
         await Send(json);
     }
-    
+
+    public async Task ToggleSource(string sceneName, string sourceName, bool visible)
+    {
+        // 1. Pega lista de itens da cena
+        string getListJson = $@"{{
+        ""op"": 6,
+        ""d"": {{
+            ""requestType"": ""GetSceneItemList"",
+            ""requestId"": ""getItems"",
+            ""requestData"": {{
+                ""sceneName"": ""{sceneName}""
+            }}
+        }}
+    }}";
+
+        await Send(getListJson);
+        string resposta = await Receive();
+
+        // 2. Procura o ID da source pelo nome
+        int sceneItemId = -1;
+
+        string[] split = resposta.Split('{');
+
+        foreach (var part in split)
+        {
+            if (part.Contains($@"""sourceName"":""{sourceName}"""))
+            {
+                int idIndex = part.IndexOf("sceneItemId");
+                int start = part.IndexOf(":", idIndex) + 1;
+                int end = part.IndexOf(",", start);
+
+                string idStr = part.Substring(start, end - start).Trim();
+                int.TryParse(idStr, out sceneItemId);
+                break;
+            }
+        }
+
+        if (sceneItemId == -1)
+        {
+            Debug.LogError("Source não encontrada");
+            return;
+        }
+
+        // 3. Liga/Desliga
+        string toggleJson = $@"{{
+        ""op"": 6,
+        ""d"": {{
+            ""requestType"": ""SetSceneItemEnabled"",
+            ""requestId"": ""toggle"",
+            ""requestData"": {{
+                ""sceneName"": ""{sceneName}"",
+                ""sceneItemId"": {sceneItemId},
+                ""sceneItemEnabled"": {visible.ToString().ToLower()}
+            }}
+        }}
+    }}";
+
+        await Send(toggleJson);
+
+    }
 }
