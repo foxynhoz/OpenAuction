@@ -1,32 +1,73 @@
+﻿using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Lance_Atual : MonoBehaviour
 {
-    
+    [SerializeField] Text ErrorMessage;
 
-    public InputField LanceAtual_TXT;
-    public Text EntreLance_TXT;
+    public Text LanceAtual_TXT;
+    public Text LanceAnterior_TXT;
+
+    public InputField I_Lance; 
+    public InputField I_EntreLance;
 
     public float entreLance = 10f;
     public float LanceValue = 0f;
 
     void Start()
     {
-        LanceAtual_TXT.text = LanceValue.ToString();
+        I_Lance.text = (LanceValue + entreLance).ToString();
+        I_EntreLance.text = entreLance.ToString();
+
         UpdateFile();
     }
 
     void Update()
     {
-        EntreLance_TXT.text = entreLance.ToString();
-        LanceAtual_TXT.text = LanceValue.ToString();
+        LanceAtual_TXT.text = LanceValue.ToString();      
+    }
+
+    public void changeLance()
+    {
+        try
+        {
+            if (float.Parse(I_Lance.text) > LanceValue)
+            {
+                LanceAnterior_TXT.text = LanceValue.ToString();
+                LanceValue = float.Parse(I_Lance.text);
+                I_Lance.text = (LanceValue + entreLance).ToString();
+                I_Lance.Select();
+                I_Lance.ActivateInputField();
+                UpdateFile();
+            }
+            else
+            {
+                ErrorMessage.text = "⚠Valor do lance deve ser maior que o lance atual.";
+                StartCoroutine(ShowError());
+                Debug.Log("Valor do lance deve ser maior que o lance atual.");
+            }
+        }
+        catch
+        {
+            ErrorMessage.text = "⚠Valor do lance inválido.";
+            StartCoroutine(ShowError());
+            Debug.Log("Valor do lance inválido.");
+        }       
+    }
+
+    public void desfazerLance()
+    {
+        LanceValue = float.Parse(LanceAnterior_TXT.text);
+        I_Lance.text = (LanceValue + entreLance).ToString();
+        UpdateFile();
     }
 
     public void addLance()
     {
         LanceValue += entreLance;
+        I_Lance.text = (LanceValue + entreLance).ToString();
         UpdateFile();
 
     }
@@ -35,6 +76,7 @@ public class Lance_Atual : MonoBehaviour
         if (LanceValue > 0f)
         {
             LanceValue -= entreLance;
+            I_Lance.text = LanceValue.ToString();
             UpdateFile();
             if (LanceValue < 0f)
             {
@@ -45,7 +87,8 @@ public class Lance_Atual : MonoBehaviour
 
     public void changeEntreLance()
     {
-        entreLance = float.Parse(EntreLance_TXT.text);
+        entreLance = float.Parse(I_EntreLance.text);
+        I_EntreLance.text = entreLance.ToString();
     }
     
     public void Vendido()
@@ -63,6 +106,12 @@ public class Lance_Atual : MonoBehaviour
         }
 
         File.WriteAllText(dataDir + "/LanceAtual.txt", LanceValue.ToString());
-        Debug.Log(dataDir + "/LanceAtual.txt");
+    }
+
+    IEnumerator ShowError()
+    {
+        ErrorMessage.gameObject.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        ErrorMessage.gameObject.SetActive(false);
     }
 }
