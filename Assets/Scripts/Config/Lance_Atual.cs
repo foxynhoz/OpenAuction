@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class Lance_Atual : MonoBehaviour
 {
-    public Text LanceAtual_TXT;
+    
+
+    public InputField LanceAtual_TXT;
     public Text EntreLance_TXT;
 
     public float entreLance = 10f;
@@ -12,7 +14,8 @@ public class Lance_Atual : MonoBehaviour
 
     void Start()
     {
-        File.WriteAllText("LanceAtual.txt", LanceValue.ToString());
+        LanceAtual_TXT.text = LanceValue.ToString();
+        UpdateFile();
     }
 
     void Update()
@@ -24,7 +27,7 @@ public class Lance_Atual : MonoBehaviour
     public void addLance()
     {
         LanceValue += entreLance;
-        File.WriteAllText("LanceAtual.txt", LanceValue.ToString());
+        UpdateFile();
 
     }
     public void subLance()
@@ -32,7 +35,7 @@ public class Lance_Atual : MonoBehaviour
         if (LanceValue > 0f)
         {
             LanceValue -= entreLance;
-            File.WriteAllText("LanceAtual.txt", LanceValue.ToString());
+            UpdateFile();
             if (LanceValue < 0f)
             {
                 LanceValue = 0f;
@@ -43,5 +46,23 @@ public class Lance_Atual : MonoBehaviour
     public void changeEntreLance()
     {
         entreLance = float.Parse(EntreLance_TXT.text);
+    }
+    
+    public void Vendido()
+    {
+        LanceValue = 0f;
+        UpdateFile();
+    }
+
+    private void UpdateFile()
+    {
+        string dataDir = Application.dataPath + "/LeilaoData";
+        if (!Directory.Exists(dataDir))
+        {
+            Directory.CreateDirectory(dataDir);
+        }
+
+        File.WriteAllText(dataDir + "/LanceAtual.txt", LanceValue.ToString());
+        Debug.Log(dataDir + "/LanceAtual.txt");
     }
 }
