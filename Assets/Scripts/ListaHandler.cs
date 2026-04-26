@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,12 @@ public class ListaHandler : MonoBehaviour
     FileHandler fileHandler = new FileHandler();
 
     public List<Animal> lotes = new List<Animal>();
+
+    [SerializeField] Text leilACTIVE_TXT;
+    public string leilaoAtivo = ""; // Nome do leilão ativo, usado para nomear o arquivo JSON
+
+    [Header("Input Fields")]
+    [SerializeField] InputField fileNameInput;
     [SerializeField] InputField searchInput;
 
     [SerializeField] InputField loteID_Field;
@@ -42,28 +49,43 @@ public class ListaHandler : MonoBehaviour
         loteInfoExtras_Field.text = "";
     }
 
+    private void Update()
+    {
+        leilACTIVE_TXT.text = "LEILÃO ATIVO: " + leilaoAtivo;
+    }
+
+
     [ContextMenu("Adicionar Animal")]
     public void AddLote()
     {
-        lotes.Add(new Animal
+        if (leilaoAtivo == "")
         {
-            loteID = int.TryParse(loteID_Field.text, out int loteID) ? loteID : 0,
-            brinco = int.TryParse(loteBrinco_Field.text, out int brinco) ? brinco : 0,
-            sangue = loteSangue_Field.text,
-            nome = loteName_Field.text,
-            sexo = loteSexo_Field.text,
-            nascimento = loteNascimento_Field.text,
-            peso = lotePeso_Field.text,
-            ultimoParto = loteUltimoParto_Field.text,
-            prevParto = lotePrevParto_Field.text,
-            producao = loteProducao_Field.text,
-            pai = lotePai_Field.text,
-            mae = loteMae_Field.text,
-            infoExtras = loteInfoExtras_Field.text,
-        });
+            Debug.LogError("Nenhum leilão ativo. Defina o nome do leilão antes de adicionar lotes.");
+            return;
+        }
+        else
+        {
+            lotes.Add(new Animal
+            {
+                loteID = int.TryParse(loteID_Field.text, out int loteID) ? loteID : 0,
+                brinco = int.TryParse(loteBrinco_Field.text, out int brinco) ? brinco : 0,
+                sangue = loteSangue_Field.text,
+                nome = loteName_Field.text,
+                sexo = loteSexo_Field.text,
+                nascimento = loteNascimento_Field.text,
+                peso = lotePeso_Field.text,
+                ultimoParto = loteUltimoParto_Field.text,
+                prevParto = lotePrevParto_Field.text,
+                producao = loteProducao_Field.text,
+                pai = lotePai_Field.text,
+                mae = loteMae_Field.text,
+                infoExtras = loteInfoExtras_Field.text,
+            });
+            SalvarLista();
+        }
     }
 
-    public void setLoteManual()
+    public void setLoteManual() //Atualiza no OBS o lote atual com os dados do lote encontrado
     {
         int SearchedloteID = int.Parse(searchInput.text);
         Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
@@ -97,7 +119,7 @@ public class ListaHandler : MonoBehaviour
         sb.AppendLine(foundLote.sangue ?? "");
         sb.AppendLine(foundLote.nascimento ?? "");
         sb.AppendLine(foundLote.ultimoParto ?? "");
-        sb.AppendLine(foundLote.prevParto ?? "");
+        sb.AppendLine("Prev. Parto: " + (foundLote.prevParto ?? ""));
         sb.AppendLine(foundLote.producao ?? "");
         sb.AppendLine(foundLote.peso ?? "");
         sb.AppendLine(foundLote.pai ?? "");
@@ -108,6 +130,105 @@ public class ListaHandler : MonoBehaviour
         Debug.Log("Lote salvo");
     }
 
+
+    public void novoLeilao()
+    {
+        if (string.IsNullOrEmpty(fileNameInput.text))
+        {
+            Debug.LogError("Nome do leilão não pode ser vazio.");
+            return;
+        }
+        leilaoAtivo = fileNameInput.text;
+        lotes.Clear();
+        SalvarLista();
+    }
+
+    public void DeleteLote() // Exclui um lote específico da lista e atualiza o arquivo JSON
+    {
+        int SearchedloteID = int.Parse(searchInput.text);
+        Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
+        if (foundLote != null)
+        {
+            lotes.Remove(foundLote);
+            SalvarLista();
+            Debug.Log("Animal excluído: " + foundLote.nome);
+        }
+        else
+        {
+            Debug.Log("Animal não encontrado para exclusão.");
+        }
+    }
+
+    public void ClearLotes() // Limpa a lista de lotes e o arquivo JSON correspondente
+    {
+        lotes.Clear();
+        if (leilaoAtivo != null)
+        {
+            fileHandler.UpdateFile("Leiloes/" + leilaoAtivo + ".json", JsonUtility.ToJson(new AnimalList { animais = lotes }, true));
+            Debug.Log("Lista de lotes limpa");
+        }
+        else
+        {
+            Debug.LogError("Nenhum leilão ativo. Defina o nome do leilão antes de limpar os lotes.");
+        }
+    }
+
+
+    [ContextMenu("Salvar Lista")]
+    public void SalvarLista() // Salva a lista completa de lotes em um arquivo JSON
+    {
+        if (leilaoAtivo == null)
+        {
+            Debug.LogError("Nenhum leilão ativo. Defina o nome do leilão antes de salvar a lista.");
+            return;
+        }
+
+        AnimalList wrapper = new AnimalList();
+        wrapper.animais = lotes; // sua lista
+
+        string json = JsonUtility.ToJson(wrapper, true);
+
+        fileHandler.UpdateFile("Leiloes/" + leilaoAtivo + ".json", json);
+
+        Debug.Log("Lista salva");
+    }
+
+    [ContextMenu("Carregar Lista")]
+    public void CarregarLista() // Carrega a lista completa de lotes de um arquivo JSON
+    {
+        string path = Application.dataPath + "/LeilaoData/Leiloes/" + fileNameInput.text + ".json";
+        
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            leilaoAtivo = fileNameInput.text;
+
+            AnimalList wrapper = JsonUtility.FromJson<AnimalList>(json);
+
+            lotes = wrapper.animais;
+            leilaoAtivo = fileNameInput.text;
+
+            Debug.Log("Lista carregada: " + lotes.Count);
+
+        }
+        else
+        {
+            Debug.Log("Arquivo não encontrado");
+        }
+    }
+
+
+
+
+
+
+}
+
+[System.Serializable]
+public class AnimalList
+{
+    public List<Animal> animais;
 }
 
 [System.Serializable]
