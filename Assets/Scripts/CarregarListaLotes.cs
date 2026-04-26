@@ -83,15 +83,9 @@ public class CsvVacas : MonoBehaviour
             output += "\n";
         }
 
-        string dataDir = Application.dataPath + "/LeilaoData";
-        if (!Directory.Exists(dataDir))
-        {
-            Directory.CreateDirectory(dataDir);
-        }
-
-        File.WriteAllText(dataDir + "/LoteAtual.txt", output);
-
-        Debug.Log("Salvo: " + dataDir + " | Linha: " + currentLine);
+        fileHandler.UpdateFile("LoteAtual.txt", output);
+        
+        Debug.Log("Salvo: " + " | Linha: " + currentLine);
     }
 
 }

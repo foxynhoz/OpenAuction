@@ -1,56 +1,117 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ListaHandler : MonoBehaviour
 {
-    public List<Lote> lotes = new List<Lote>();
+    FileHandler fileHandler = new FileHandler();
+
+    public List<Animal> lotes = new List<Animal>();
     [SerializeField] InputField searchInput;
 
-    void Start()
+    [SerializeField] InputField loteID_Field;
+    [SerializeField] InputField loteName_Field;
+    [SerializeField] InputField loteBrinco_Field;
+    [SerializeField] InputField loteSangue_Field;
+    [SerializeField] InputField loteNascimento_Field;
+    [SerializeField] InputField loteSexo_Field;
+    [SerializeField] InputField loteUltimoParto_Field;
+    [SerializeField] InputField lotePrevParto_Field;
+    [SerializeField] InputField loteProducao_Field;
+    [SerializeField] InputField lotePeso_Field;
+    [SerializeField] InputField lotePai_Field;
+    [SerializeField] InputField loteMae_Field;
+    [SerializeField] InputField loteInfoExtras_Field;
+
+    private void Start()
     {
-        
+        loteID_Field.text = "";
+        loteName_Field.text = "";
+        loteBrinco_Field.text = "";
+        loteSangue_Field.text = "";
+        loteNascimento_Field.text = "";
+        loteSexo_Field.text = "";
+        loteUltimoParto_Field.text = "";
+        lotePrevParto_Field.text = "";
+        loteProducao_Field.text = "";
+        lotePeso_Field.text = "";
+        lotePai_Field.text = "";
+        loteMae_Field.text = "";
+        loteInfoExtras_Field.text = "";
     }
 
-    [ContextMenu("Adicionar Lote")]
-    void AddLote()
+    [ContextMenu("Adicionar Animal")]
+    public void AddLote()
     {
-        lotes.Add(new Lote
+        lotes.Add(new Animal
         {
-            loteID = 1,
-            brinco = 123,
-            nome = "Lote 1",
-            infoExtras = "Informações extras do lote 1",
-            sexo = "Macho",
-            sangue = "A+",
-            nascimento = "01/01/2020",
-            ultimoParto = "01/01/2022",
-            producao = "100 litros",
-            pai = "Pai do lote 1",
-            mae = "Mãe do lote 1"
-        }
-        );
+            loteID = int.TryParse(loteID_Field.text, out int loteID) ? loteID : 0,
+            brinco = int.TryParse(loteBrinco_Field.text, out int brinco) ? brinco : 0,
+            sangue = loteSangue_Field.text,
+            nome = loteName_Field.text,
+            sexo = loteSexo_Field.text,
+            nascimento = loteNascimento_Field.text,
+            peso = lotePeso_Field.text,
+            ultimoParto = loteUltimoParto_Field.text,
+            prevParto = lotePrevParto_Field.text,
+            producao = loteProducao_Field.text,
+            pai = lotePai_Field.text,
+            mae = loteMae_Field.text,
+            infoExtras = loteInfoExtras_Field.text,
+        });
     }
 
-    public void listSearch()
+    public void setLoteManual()
     {
         int SearchedloteID = int.Parse(searchInput.text);
-        Lote foundLote = lotes.Find(l => l.loteID == SearchedloteID);
+        Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
 
         if (foundLote != null)
         {
-            Debug.Log("Lote encontrado: " + foundLote.nome);
+            Debug.Log("Animal encontrado: " + foundLote.nome);
+            SalvarLoteEncontrado(foundLote);
         }
         else
         {
-            Debug.Log("Lote não encontrado.");
+            Debug.Log("Animal não encontrado.");
         }
     }
+
+    public void SalvarLoteEncontrado(Animal foundLote)
+    {
+        if (foundLote == null)
+        {
+            Debug.Log("Nada para salvar");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendLine(foundLote.loteID.ToString());
+        sb.AppendLine(foundLote.brinco.ToString());
+        sb.AppendLine(foundLote.nome ?? "");
+        sb.AppendLine(foundLote.infoExtras ?? "");
+        sb.AppendLine(foundLote.sexo ?? "");
+        sb.AppendLine(foundLote.sangue ?? "");
+        sb.AppendLine(foundLote.nascimento ?? "");
+        sb.AppendLine(foundLote.ultimoParto ?? "");
+        sb.AppendLine(foundLote.prevParto ?? "");
+        sb.AppendLine(foundLote.producao ?? "");
+        sb.AppendLine(foundLote.peso ?? "");
+        sb.AppendLine(foundLote.pai ?? "");
+        sb.AppendLine(foundLote.mae ?? "");
+
+        fileHandler.UpdateFile("LoteAtual.txt", sb.ToString());
+
+        Debug.Log("Lote salvo");
+    }
+
 }
 
 [System.Serializable]
-public class Lote
+public class Animal
 {
     public int loteID;
     public int brinco;
@@ -60,7 +121,9 @@ public class Lote
     public string sangue;
     public string nascimento;
     public string ultimoParto;
+    public string prevParto;
     public string producao;
+    public string peso;
     public string pai;
     public string mae;
 }
