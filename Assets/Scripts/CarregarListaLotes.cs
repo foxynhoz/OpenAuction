@@ -4,6 +4,8 @@ using static UnityEditor.Rendering.CameraUI;
 
 public class CsvVacas : MonoBehaviour
 {
+    FileHandler fileHandler = new FileHandler();
+
     private string csvPath;
     private string[][] data;
     private int currentLine = 0;

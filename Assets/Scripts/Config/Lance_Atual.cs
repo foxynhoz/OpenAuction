@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Lance_Atual : MonoBehaviour
 {
+    FileHandler fileHandler = new FileHandler();
     [SerializeField] Text ErrorMessage;
 
     public Text LanceAtual_TXT;
@@ -21,7 +22,7 @@ public class Lance_Atual : MonoBehaviour
         I_Lance.text = (LanceValue + entreLance).ToString();
         I_EntreLance.text = entreLance.ToString();
 
-        UpdateFile();
+        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
     }
 
     void Update()
@@ -29,7 +30,7 @@ public class Lance_Atual : MonoBehaviour
         LanceAtual_TXT.text = LanceValue.ToString();      
     }
 
-    public void changeLance()
+    public void changeLance() //trocar o lance atual pelo valor do input field
     {
         try
         {
@@ -40,7 +41,7 @@ public class Lance_Atual : MonoBehaviour
                 I_Lance.text = (LanceValue + entreLance).ToString();
                 I_Lance.Select();
                 I_Lance.ActivateInputField();
-                UpdateFile();
+                fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
             }
             else
             {
@@ -57,14 +58,14 @@ public class Lance_Atual : MonoBehaviour
         }       
     }
 
-    public void desfazerLance()
+    public void desfazerLance() //trocar o lance atual pelo lance anterior
     {
         LanceValue = float.Parse(LanceAnterior_TXT.text);
         I_Lance.text = (LanceValue + entreLance).ToString();
-        UpdateFile();
+        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
     }
 
-    public void changeEntreLance()
+    public void changeEntreLance() //trocar o valor do entre lance
     {
         entreLance = float.Parse(I_EntreLance.text);
         I_EntreLance.text = entreLance.ToString();
@@ -74,18 +75,7 @@ public class Lance_Atual : MonoBehaviour
     {
         LanceValue = 0f;
         I_Lance.text = (LanceValue + entreLance).ToString();
-        UpdateFile();
-    }
-
-    private void UpdateFile()
-    {
-        string dataDir = Application.dataPath + "/LeilaoData";
-        if (!Directory.Exists(dataDir))
-        {
-            Directory.CreateDirectory(dataDir);
-        }
-
-        File.WriteAllText(dataDir + "/LanceAtual.txt", LanceValue.ToString());
+        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
     }
 
     IEnumerator ShowError()
