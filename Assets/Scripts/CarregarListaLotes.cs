@@ -4,6 +4,10 @@ using static UnityEditor.Rendering.CameraUI;
 
 public class CsvVacas : MonoBehaviour
 {
+    /* DEPRECATED - USAR JSON INSTEAD
+     * 
+     * 
+     * 
     FileHandler fileHandler = new FileHandler();
 
     private string csvPath;
@@ -87,5 +91,6 @@ public class CsvVacas : MonoBehaviour
         
         Debug.Log("Salvo: " + " | Linha: " + currentLine);
     }
+    */
 
 }

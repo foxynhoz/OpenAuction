@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class Lance_Atual : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
-    [SerializeField] Text ErrorMessage;
-
+    ErrorHandler ErrorHandler;
+    
     public Text LanceAtual_TXT;
     public Text LanceAnterior_TXT;
 
@@ -19,6 +19,7 @@ public class Lance_Atual : MonoBehaviour
 
     void Start()
     {
+        ErrorHandler = GetComponent<ErrorHandler>();
         I_Lance.text = (LanceValue + entreLance).ToString();
         I_EntreLance.text = entreLance.ToString();
 
@@ -45,15 +46,13 @@ public class Lance_Atual : MonoBehaviour
             }
             else
             {
-                ErrorMessage.text = "⚠Valor do lance deve ser maior que o lance atual.";
-                StartCoroutine(ShowError());
+                ErrorHandler.showError("Valor do lance deve ser maior que o lance atual.");
                 Debug.Log("Valor do lance deve ser maior que o lance atual.");
             }
         }
         catch
         {
-            ErrorMessage.text = "⚠Valor do lance inválido.";
-            StartCoroutine(ShowError());
+            ErrorHandler.showError("Valor do lance inválido.");
             Debug.Log("Valor do lance inválido.");
         }       
     }
@@ -78,10 +77,5 @@ public class Lance_Atual : MonoBehaviour
         fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
     }
 
-    IEnumerator ShowError()
-    {
-        ErrorMessage.gameObject.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        ErrorMessage.gameObject.SetActive(false);
-    }
+    
 }

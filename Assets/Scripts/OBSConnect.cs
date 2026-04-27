@@ -5,25 +5,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OBSWebSocket : MonoBehaviour
 {
     ClientWebSocket ws;
+    [SerializeField] InputField IPfield;
 
-    async void Start()
-    {
-        await Connect();
-        await Identify();
-    }
 
-    async Task Connect()
+    async Task Connect(string ip)
     {
         ws = new ClientWebSocket();
-        Uri uri = new Uri("ws://127.0.0.1:4455");
+        Uri uri = new Uri(ip);
         await ws.ConnectAsync(uri, CancellationToken.None);
         Debug.Log("Conectado ao OBS");
 
         await Receive(); // recebe o Hello
+    }
+
+    async Task Disconect()
+    {
+        if (ws != null && ws.State == WebSocketState.Open)
+        {
+            await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Desconectando", CancellationToken.None);
+            Debug.Log("Desconectado do OBS");
+        }
     }
 
     async Task Identify()
@@ -67,11 +73,19 @@ public class OBSWebSocket : MonoBehaviour
     }
 
     //FUNÇOES DOS BOTOES
+
     public int delay = 3000;
     public void Transition()
     {
         _ = TransitionTask(delay);
     }
+
+    public void ConnectButton()
+    {
+        _ = Connect(IPfield.text);
+    }
+
+    ////////////////////////////////////////////////////////
 
     async Task TransitionTask(int delay)
     {
@@ -81,7 +95,7 @@ public class OBSWebSocket : MonoBehaviour
 
         await SetCena("Cena B");
     }
-
+    
     async Task SetCena(string nome)
     {
         string json = $@"{{

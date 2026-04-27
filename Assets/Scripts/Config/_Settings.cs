@@ -1,6 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using UnityEngine.UI;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class _Settings : MonoBehaviour
 {
@@ -18,6 +21,7 @@ public class _Settings : MonoBehaviour
             Directory.CreateDirectory(leiloesDir);
         }
     }
+    
 }
 
 public class FileHandler
@@ -35,5 +39,7 @@ public class FileHandler
             File.WriteAllText(dataDir + fileName, content);
         }
  }
+
+
     
 
