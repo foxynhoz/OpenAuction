@@ -23,7 +23,6 @@ public class _Settings : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
     }
-    
 }
 
 public class FileHandler
@@ -31,8 +30,8 @@ public class FileHandler
      static string dataDir = Application.dataPath + "/LeilaoData/";
      static string leiloesDir = dataDir + "Leiloes/";
 
-        public void UpdateFile(string fileName, string content) //atualizar o arquivo de texto com o valor do lance atual
-        {
+        public void UpdateFile(string fileName, string content) //atualizar o arquivo passado com o conteúdo passado
+    {
             if (!Directory.Exists(dataDir))
             {
                 Directory.CreateDirectory(dataDir);

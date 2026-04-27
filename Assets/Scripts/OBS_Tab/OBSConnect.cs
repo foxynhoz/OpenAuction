@@ -1,9 +1,13 @@
-using JetBrains.Annotations;
+ï»¿using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +15,21 @@ public class OBSWebSocket : MonoBehaviour
 {
     ClientWebSocket ws;
     [SerializeField] InputField IPfield;
+    [SerializeField] Text statusText;
 
+    private void Update()
+    {
+        if (ws != null && ws.State == WebSocketState.Open)
+        {
+            statusText.text = $"OBS STATUS: Conectado";
+            statusText.color = Color.green;
+        }
+        else
+        {
+            statusText.text = "OBS STATUS: Desconectado" + "ðŸ”´";
+            statusText.color = Color.red;
+        }
+    }
 
     async Task Connect(string ip)
     {
@@ -21,6 +39,7 @@ public class OBSWebSocket : MonoBehaviour
         Debug.Log("Conectado ao OBS");
 
         await Receive(); // recebe o Hello
+        await Identify(); // envia Identify e recebe Identified
     }
 
     async Task Disconect()
@@ -45,17 +64,6 @@ public class OBSWebSocket : MonoBehaviour
         await Receive(); // recebe Identified
     }
 
-    async Task TriggerTransition()
-    {
-        string json = @"{
-            ""op"": 6,
-            ""d"": {""requestType"": ""TriggerStudioModeTransition"",""requestId"": ""1""
-            }
-        }";
-
-        await Send(json);
-        Debug.Log("Transição enviada");
-    }
 
     async Task Send(string message)
     {
@@ -68,49 +76,86 @@ public class OBSWebSocket : MonoBehaviour
         var buffer = new byte[1024];
         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         string msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-        Debug.Log("Recebido: " + msg);
+        Debug.Log(JObject.Parse(msg));
         return msg;
     }
 
-    //FUNÇOES DOS BOTOES
+    //FUNÃ‡OES DOS BOTOES
+
+    [ContextMenu("Toggle Studio Mode")]
+    public void TriggerToggleStudioMode()
+    {
+        _ = ToggleStudioMode();
+    }
 
     public int delay = 3000;
-    public void Transition()
-    {
-        _ = TransitionTask(delay);
-    }
+
 
     public void ConnectButton()
     {
-        _ = Connect(IPfield.text);
-    }
+        if (string.IsNullOrEmpty(IPfield.text))
+        {
+            Debug.LogError("IP do OBS nÃ£o pode ser vazio");
+            return;
+        }
+        if (ws == null || ws.State == WebSocketState.Closed)
+        {
+            _ = Connect(IPfield.text);
+        }
+        else
+        {
+            _ = Disconect();
+        }
 
+    }
     ////////////////////////////////////////////////////////
 
-    async Task TransitionTask(int delay)
+    async Task TriggerTransition()
     {
-        await SetCena("Transicao");
-
-        await Task.Delay(delay);
-
-        await SetCena("Cena B");
-    }
-    
-    async Task SetCena(string nome)
-    {
-        string json = $@"{{
-        ""op"": 6,
-        ""d"": {{
-            ""requestType"": ""SetCurrentProgramScene"",
-            ""requestId"": ""setScene"",
-            ""requestData"": {{
-                ""sceneName"": ""{nome}""
-            }}
-        }}
-    }}";
+        string json = @"{
+            ""op"": 6,
+            ""d"": {""requestType"": ""TriggerStudioModeTransition"",
+            ""requestId"": ""1""
+            }
+        }";
 
         await Send(json);
+        Debug.Log("TransiÃ§Ã£o enviada");
     }
+
+    [ContextMenu("Get Scene List")]
+    async Task GetSceneList()
+    {
+        string json = @"{
+            ""op"": 6,
+            ""d"": {""requestType"": ""GetSceneList"",
+            ""requestId"": ""1""
+            }
+        }";
+
+        await Send(json);
+        Debug.Log("Get Scene List enviado");
+        await Receive(); // recebe a lista de cenas
+        
+    }
+
+    async Task ToggleStudioMode()
+    {
+        string json = @"{
+          ""op"": 6,
+          ""d"": {
+            ""requestType"": ""SetStudioModeEnabled"",
+            ""requestId"": ""1"",
+            ""requestData"": {
+                ""studioModeEnabled"": true
+            }
+          }
+        }";
+        await Send(json);
+        Debug.Log("Toggle Studio Mode enviado");
+    }
+
+
 
     public async Task ToggleSource(string sceneName, string sourceName, bool visible)
     {
@@ -150,7 +195,7 @@ public class OBSWebSocket : MonoBehaviour
 
         if (sceneItemId == -1)
         {
-            Debug.LogError("Source não encontrada");
+            Debug.LogError("Source nÃ£o encontrada");
             return;
         }
 
@@ -171,4 +216,28 @@ public class OBSWebSocket : MonoBehaviour
         await Send(toggleJson);
 
     }
+}
+
+
+//MAGIA NEGRA
+public class Root
+{
+    public D d { get; set; }
+}
+
+public class D
+{
+    public ResponseData responseData { get; set; }
+}
+
+public class ResponseData
+{
+    public List<Scene> scenes { get; set; }
+}
+
+public class Scene
+{
+    public int sceneIndex { get; set; }
+    public string sceneName { get; set; }
+    public string sceneUuid { get; set; }
 }

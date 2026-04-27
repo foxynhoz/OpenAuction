@@ -4,8 +4,18 @@ using System.Collections;
 
 public class ErrorHandler : MonoBehaviour
 {
+    [SerializeField] Animator Animator;
     public GameObject ErrorTXT;
 
+    private void Start()
+    {
+        Animator = GetComponentInChildren<Animator>();
+    }
+    [ContextMenu("TestError")]
+    public void TestError()
+    {
+        StartCoroutine(Error("This is a test error message."));
+    }
     public void showError(string errorCode)
     {
         StartCoroutine(Error(errorCode));
@@ -13,9 +23,8 @@ public class ErrorHandler : MonoBehaviour
 
     public IEnumerator Error(string message)
     {
-        ErrorTXT.GetComponent<Text>().text = "⚠" + message;
-        ErrorTXT.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        ErrorTXT.SetActive(false);
+        ErrorTXT.GetComponent<Text>().text = message;
+        Animator.Play("Error_Pop");
+        yield return null;
     }
 }

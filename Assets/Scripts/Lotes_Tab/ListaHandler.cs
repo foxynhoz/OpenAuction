@@ -17,7 +17,7 @@ public class ListaHandler : MonoBehaviour
     [Header("Input Fields")]
     [SerializeField] InputField fileNameInput;
     [SerializeField] InputField searchInput;
-
+    [SerializeField] InputField idade_Field;
     [SerializeField] InputField loteID_Field;
     [SerializeField] InputField loteName_Field;
     [SerializeField] InputField loteBrinco_Field;
@@ -41,6 +41,7 @@ public class ListaHandler : MonoBehaviour
         loteNascimento_Field.text = "";
         loteSexo_Field.text = "";
         loteUltimoParto_Field.text = "";
+        idade_Field.text = "";
         lotePrevParto_Field.text = "";
         loteProducao_Field.text = "";
         lotePeso_Field.text = "";
@@ -73,6 +74,7 @@ public class ListaHandler : MonoBehaviour
                 nome = loteName_Field.text,
                 sexo = loteSexo_Field.text,
                 nascimento = loteNascimento_Field.text,
+                idade = idade_Field.text,
                 peso = lotePeso_Field.text,
                 ultimoParto = loteUltimoParto_Field.text,
                 prevParto = lotePrevParto_Field.text,
@@ -82,8 +84,8 @@ public class ListaHandler : MonoBehaviour
                 infoExtras = loteInfoExtras_Field.text,
             });
             SalvarLista();
-        }
-    }
+            }
+         }
 
     public void setLoteManual() //Atualiza no OBS o lote atual com os dados do lote encontrado
     {
@@ -138,6 +140,13 @@ public class ListaHandler : MonoBehaviour
             Debug.LogError("Nome do leilão não pode ser vazio.");
             return;
         }
+
+        if(File.Exists(Application.dataPath + "/LeilaoData/Leiloes/" + fileNameInput.text.ToLower() + ".json"))
+        {
+            Debug.LogError("Já existe um leilão com esse nome. Escolha outro nome ou exclua o leilão existente.");
+            return;
+        }
+
         leilaoAtivo = fileNameInput.text;
         lotes.Clear();
         SalvarLista();
@@ -188,29 +197,24 @@ public class ListaHandler : MonoBehaviour
 
         string json = JsonUtility.ToJson(wrapper, true);
 
-        fileHandler.UpdateFile("Leiloes/" + leilaoAtivo + ".json", json);
+        fileHandler.UpdateFile("Leiloes/" + leilaoAtivo.ToLower() + ".json", json);
 
         Debug.Log("Lista salva");
     }
 
     [ContextMenu("Carregar Lista")]
-    public void CarregarLista() // Carrega a lista completa de lotes de um arquivo JSON
+    public void CarregarLista(string filename, string path) // Carrega a lista completa de lotes de um arquivo JSON
     {
-        string path = Application.dataPath + "/LeilaoData/Leiloes/" + fileNameInput.text + ".json";
         
-
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            leilaoAtivo = fileNameInput.text;
+            leilaoAtivo = filename.ToUpper();
 
             AnimalList wrapper = JsonUtility.FromJson<AnimalList>(json);
-
             lotes = wrapper.animais;
-            leilaoAtivo = fileNameInput.text;
 
             Debug.Log("Lista carregada: " + lotes.Count);
-
         }
         else
         {
@@ -239,6 +243,7 @@ public class Animal
     public string nome;
     public string infoExtras;
     public string sexo;
+    public string idade;
     public string sangue;
     public string nascimento;
     public string ultimoParto;

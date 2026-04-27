@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Lance_Atual : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
-    ErrorHandler ErrorHandler;
+    [SerializeField] ErrorHandler ErrorHandler;
     
     public Text LanceAtual_TXT;
     public Text LanceAnterior_TXT;
@@ -19,7 +19,6 @@ public class Lance_Atual : MonoBehaviour
 
     void Start()
     {
-        ErrorHandler = GetComponent<ErrorHandler>();
         I_Lance.text = (LanceValue + entreLance).ToString();
         I_EntreLance.text = entreLance.ToString();
 
