@@ -11,6 +11,7 @@ public class Tab_Manager : MonoBehaviour
     [SerializeField] GameObject OBS_Panel;
     [SerializeField] GameObject Info_Panel;
     
+  
     public void activatePanel(int panelIndex)
     {
         switch(panelIndex)
@@ -51,5 +52,14 @@ public class Tab_Manager : MonoBehaviour
                 Info_Panel.SetActive(true);
                 break;
         }
+    }
+}
+
+[ExecuteInEditMode]
+public class Teste : MonoBehaviour
+{
+    void Update()
+    {
+        Debug.Log("Rodando no editor");
     }
 }

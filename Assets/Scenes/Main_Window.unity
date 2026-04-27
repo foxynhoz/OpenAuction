@@ -230,11 +230,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2019454363}
+  m_Father: {fileID: 755765633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 34.568024, y: -157.2}
+  m_AnchoredPosition: {x: -256.39713, y: -45.699997}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &12443694
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1995,7 +1995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &208812990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3366,7 +3366,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000016257662}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 88.84}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &363919389
 MonoBehaviour:
@@ -4797,8 +4797,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 155014621}
   m_HandleRect: {fileID: 155014620}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999998
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5112,7 +5112,6 @@ GameObject:
   - component: {fileID: 580007355}
   - component: {fileID: 580007354}
   - component: {fileID: 580007353}
-  - component: {fileID: 580007356}
   m_Layer: 5
   m_Name: MESAOP_BUTTON
   m_TagString: Untagged
@@ -5184,7 +5183,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 580007354}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1876926584}
+        m_TargetAssemblyTypeName: Tab_Manager, Assembly-CSharp
+        m_MethodName: activatePanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &580007354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5223,23 +5234,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580007351}
   m_CullTransparentMesh: 1
---- !u!114 &580007356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580007351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 0}
-  Lotes_Panel: {fileID: 0}
-  MesaOP_Panel: {fileID: 755765632}
-  OBS_Panel: {fileID: 0}
-  Info_Panel: {fileID: 0}
 --- !u!1 &616934481
 GameObject:
   m_ObjectHideFlags: 0
@@ -6318,7 +6312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &755765633
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6343,6 +6337,8 @@ RectTransform:
   - {fileID: 1771406437}
   - {fileID: 1200312925}
   - {fileID: 1661800732}
+  - {fileID: 1068370188}
+  - {fileID: 12443693}
   m_Father: {fileID: 628858641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7216,7 +7212,7 @@ RectTransform:
   m_Father: {fileID: 1033406672}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8504,7 +8500,7 @@ MonoBehaviour:
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 120856217}
         m_TargetAssemblyTypeName: ListaHandler, Assembly-CSharp
         m_MethodName: setLoteManual
         m_Mode: 1
@@ -8544,11 +8540,11 @@ RectTransform:
   m_Children:
   - {fileID: 1154610300}
   - {fileID: 496400835}
-  m_Father: {fileID: 2019454363}
+  m_Father: {fileID: 755765633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.965149, y: -175.50002}
+  m_AnchoredPosition: {x: -282, y: -64}
   m_SizeDelta: {x: 114.994, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1068370189
@@ -8747,7 +8743,6 @@ GameObject:
   - component: {fileID: 1087545138}
   - component: {fileID: 1087545137}
   - component: {fileID: 1087545136}
-  - component: {fileID: 1087545135}
   m_Layer: 5
   m_Name: EVENTO_BUTTON
   m_TagString: Untagged
@@ -8776,23 +8771,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 312.1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1087545135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087545133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 361042334}
-  Lotes_Panel: {fileID: 0}
-  MesaOP_Panel: {fileID: 0}
-  OBS_Panel: {fileID: 0}
-  Info_Panel: {fileID: 0}
 --- !u!114 &1087545136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8836,7 +8814,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1087545137}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1876926584}
+        m_TargetAssemblyTypeName: Tab_Manager, Assembly-CSharp
+        m_MethodName: activatePanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1087545137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10089,7 +10079,6 @@ GameObject:
   - component: {fileID: 1274329937}
   - component: {fileID: 1274329936}
   - component: {fileID: 1274329935}
-  - component: {fileID: 1274329934}
   m_Layer: 5
   m_Name: OBSCONFIG_BUTTON
   m_TagString: Untagged
@@ -10118,23 +10107,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 312.1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1274329934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274329932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 0}
-  Lotes_Panel: {fileID: 0}
-  MesaOP_Panel: {fileID: 0}
-  OBS_Panel: {fileID: 1794015490}
-  Info_Panel: {fileID: 0}
 --- !u!114 &1274329935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10178,7 +10150,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1274329936}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1876926584}
+        m_TargetAssemblyTypeName: Tab_Manager, Assembly-CSharp
+        m_MethodName: activatePanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1274329936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10713,7 +10697,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00003436501, y: 0.0009762312}
+  m_AnchoredPosition: {x: -0.00003436501, y: 0.00089410663}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1339225166
@@ -12236,9 +12220,9 @@ RectTransform:
   m_Father: {fileID: 1661800732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1568235544
 MonoBehaviour:
@@ -13326,7 +13310,6 @@ GameObject:
   - component: {fileID: 1767156850}
   - component: {fileID: 1767156849}
   - component: {fileID: 1767156848}
-  - component: {fileID: 1767156847}
   m_Layer: 5
   m_Name: LOTES_BUTTON
   m_TagString: Untagged
@@ -13355,23 +13338,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 312.1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1767156847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767156845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 0}
-  Lotes_Panel: {fileID: 158513831}
-  MesaOP_Panel: {fileID: 0}
-  OBS_Panel: {fileID: 0}
-  Info_Panel: {fileID: 0}
 --- !u!114 &1767156848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13415,7 +13381,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1767156849}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1876926584}
+        m_TargetAssemblyTypeName: Tab_Manager, Assembly-CSharp
+        m_MethodName: activatePanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1767156849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13871,7 +13849,6 @@ GameObject:
   - component: {fileID: 1803287334}
   - component: {fileID: 1803287333}
   - component: {fileID: 1803287332}
-  - component: {fileID: 1803287331}
   m_Layer: 5
   m_Name: SOBRE_BUTTON
   m_TagString: Untagged
@@ -13900,23 +13877,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 312.1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1803287331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803287329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 0}
-  Lotes_Panel: {fileID: 0}
-  MesaOP_Panel: {fileID: 0}
-  OBS_Panel: {fileID: 0}
-  Info_Panel: {fileID: 208812989}
 --- !u!114 &1803287332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13960,7 +13920,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1803287333}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1876926584}
+        m_TargetAssemblyTypeName: Tab_Manager, Assembly-CSharp
+        m_MethodName: activatePanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1803287333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14377,11 +14349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5740e1399516610439b6251dee30725d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Menus
-  Event_Panel: {fileID: 0}
-  Lotes_Panel: {fileID: 0}
-  MesaOP_Panel: {fileID: 0}
-  OBS_Panel: {fileID: 0}
-  Info_Panel: {fileID: 0}
+  Event_Panel: {fileID: 361042334}
+  Lotes_Panel: {fileID: 158513831}
+  MesaOP_Panel: {fileID: 755765632}
+  OBS_Panel: {fileID: 1794015490}
+  Info_Panel: {fileID: 208812989}
 --- !u!114 &1876926585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15440,13 +15412,11 @@ RectTransform:
   - {fileID: 726507719}
   - {fileID: 1181976592}
   - {fileID: 1190504143}
-  - {fileID: 1068370188}
-  - {fileID: 12443693}
   m_Father: {fileID: 628858641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1429, y: -142.2}
+  m_AnchoredPosition: {x: -972, y: -604}
   m_SizeDelta: {x: 381.184, y: 417}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2019454364
