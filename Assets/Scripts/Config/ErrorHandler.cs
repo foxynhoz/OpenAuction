@@ -11,11 +11,7 @@ public class ErrorHandler : MonoBehaviour
     {
         Animator = GetComponentInChildren<Animator>();
     }
-    [ContextMenu("TestError")]
-    public void TestError()
-    {
-        StartCoroutine(Error("This is a test error message."));
-    }
+
     public void showError(string errorCode)
     {
         StartCoroutine(Error(errorCode));
@@ -26,5 +22,11 @@ public class ErrorHandler : MonoBehaviour
         ErrorTXT.GetComponent<Text>().text = message;
         Animator.Play("Error_Pop");
         yield return null;
+    }
+
+    [ContextMenu("TestError")]
+    public void TestError()
+    {
+        StartCoroutine(Error("This is a test error message."));
     }
 }
