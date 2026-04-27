@@ -20,6 +20,8 @@ public class _Settings : MonoBehaviour
         {
             Directory.CreateDirectory(leiloesDir);
         }
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
     }
     
 }

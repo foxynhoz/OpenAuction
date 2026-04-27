@@ -1,6 +1,5 @@
 using System.IO;
 using UnityEngine;
-using static UnityEditor.Rendering.CameraUI;
 
 public class CsvVacas : MonoBehaviour
 {
