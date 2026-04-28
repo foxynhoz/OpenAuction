@@ -64,7 +64,7 @@ public class EventListLoader : MonoBehaviour
 [System.Serializable]
 public class JsonData
 {
-    public Animal[] animais;
+    public LoteData[] animais;
 }
 
 [System.Serializable]

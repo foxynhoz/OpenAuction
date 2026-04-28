@@ -9,7 +9,7 @@ public class LotesHandler : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
 
-    public List<Animal> lotes = new List<Animal>();
+    public List<LoteData> lotes = new List<LoteData>();
 
     [SerializeField] Text leilACTIVE_TXT;
     public string leilaoAtivo = ""; // Nome do leilão ativo, usado para nomear o arquivo JSON
@@ -58,7 +58,7 @@ public class LotesHandler : MonoBehaviour
     }
 
 
-    [ContextMenu("Adicionar Animal")]
+    [ContextMenu("Adicionar LoteData")]
     public void AddLote()
     {
         if (leilaoAtivo == "")
@@ -68,7 +68,7 @@ public class LotesHandler : MonoBehaviour
         }
         else
         {
-            lotes.Add(new Animal
+            lotes.Add(new LoteData
             {
                 loteID = int.TryParse(loteID_Field.text, out int loteID) ? loteID : 0,
                 brinco = int.TryParse(loteBrinco_Field.text, out int brinco) ? brinco : 0,
@@ -92,20 +92,20 @@ public class LotesHandler : MonoBehaviour
     public void setLoteManual(string loteID) //Atualiza no OBS o lote atual com os dados do lote encontrado
     {
         int SearchedloteID = int.Parse(loteID);
-        Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
+        LoteData foundLote = lotes.Find(l => l.loteID == SearchedloteID);
 
         if (foundLote != null)
         {
-            Debug.Log("Animal encontrado: " + foundLote.nome);
+            Debug.Log("LoteData encontrado: " + foundLote.nome);
             SalvarLoteEncontrado(foundLote);
         }
         else
         {
-            Debug.Log("Animal não encontrado.");
+            Debug.Log("LoteData não encontrado.");
         }
     }
 
-    public void SalvarLoteEncontrado(Animal foundLote)
+    public void SalvarLoteEncontrado(LoteData foundLote)
     {
         if (foundLote == null)
         {
@@ -113,6 +113,68 @@ public class LotesHandler : MonoBehaviour
             return;
         }
 
+        SaveIndependentTXTS(foundLote);
+        SaveSingleTXT(foundLote);
+        SaveToGCLoteJSON(foundLote);
+
+    }
+
+    /*
+   public void DeleteLote() // Exclui um lote específico da lista e atualiza o arquivo JSON
+   {
+       int SearchedloteID = int.Parse(searchInput.text);
+       LoteData foundLote = lotes.Find(l => l.loteID == SearchedloteID);
+       if (foundLote != null)
+       {
+           lotes.Remove(foundLote);
+           SalvarLista();
+           Debug.Log("LoteData excluído: " + foundLote.nome);
+       }
+       else
+       {
+           Debug.Log("LoteData não encontrado para exclusão.");
+       }
+   }
+   */
+
+    void SaveIndependentTXTS(LoteData foundLote)
+    {
+        fileHandler.UpdateFile("/OBS_Stuff/LoteID.txt", foundLote.loteID.ToString());
+        fileHandler.UpdateFile("/OBS_Stuff/brinco.txt", foundLote.brinco.ToString());
+        fileHandler.UpdateFile("/OBS_Stuff/nome.txt", foundLote.nome ?? "");
+        fileHandler.UpdateFile("/OBS_Stuff/infoExtras.txt", foundLote.infoExtras ?? "");
+        fileHandler.UpdateFile("/OBS_Stuff/sexo.txt", foundLote.sexo ?? "");
+        fileHandler.UpdateFile("/OBS_Stuff/sangue.txt", foundLote.sangue ?? "");
+
+        fileHandler.UpdateFile("/OBS_Stuff/idade.txt",
+            string.IsNullOrWhiteSpace(foundLote.idade) ? "" : $"Idade: {foundLote.idade}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/nascimento.txt",
+            string.IsNullOrWhiteSpace(foundLote.nascimento) ? "" : $"Nasc: {foundLote.nascimento}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/ultimoParto.txt",
+            string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"Últm Parto: {foundLote.ultimoParto}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/prevParto.txt",
+            string.IsNullOrWhiteSpace(foundLote.prevParto) ? "" : $"Prev. Parto: {foundLote.prevParto}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/producao.txt",
+            string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"Produção: {foundLote.producao}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/peso.txt",
+            string.IsNullOrWhiteSpace(foundLote.peso) ? "" : $"Peso: {foundLote.peso}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/pai.txt",
+            string.IsNullOrWhiteSpace(foundLote.pai) ? "" : $"Pai: {foundLote.pai}");
+
+        fileHandler.UpdateFile("/OBS_Stuff/mae.txt",
+            string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"Mãe: {foundLote.mae}");
+
+        Debug.Log("Lote salvo em arquivos individuais para OBS");
+    }
+
+    void SaveSingleTXT(LoteData foundLote)
+    {
         StringBuilder sb = new StringBuilder();
 
         sb.AppendLine(foundLote.loteID.ToString());
@@ -132,46 +194,14 @@ public class LotesHandler : MonoBehaviour
 
         fileHandler.UpdateFile("LoteAtual.txt", sb.ToString());
 
-        Debug.Log("Lote salvo");
+        Debug.Log("Lote salvo em LoteAtual.txt");
     }
 
-
-    /*
-    public void novoLeilao()
+    void SaveToGCLoteJSON(LoteData foundLote)
     {
-        if (string.IsNullOrEmpty(fileNameInput.text))
-        {
-            Debug.LogError("Nome do leilão não pode ser vazio.");
-            return;
-        }
-
-        if(File.Exists(Application.dataPath + "/LeilaoData/Leiloes/" + fileNameInput.text.ToLower() + ".json"))
-        {
-            Debug.LogError("Já existe um leilão com esse nome. Escolha outro nome ou exclua o leilão existente.");
-            return;
-        }
-
-        leilaoAtivo = fileNameInput.text;
-        lotes.Clear();
-        SalvarLista();
+        string json = JsonUtility.ToJson(foundLote, true);
+        fileHandler.UpdateFile("GCLote.json", json);
     }
-    
-    public void DeleteLote() // Exclui um lote específico da lista e atualiza o arquivo JSON
-    {
-        int SearchedloteID = int.Parse(searchInput.text);
-        Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
-        if (foundLote != null)
-        {
-            lotes.Remove(foundLote);
-            SalvarLista();
-            Debug.Log("Animal excluído: " + foundLote.nome);
-        }
-        else
-        {
-            Debug.Log("Animal não encontrado para exclusão.");
-        }
-    }
-    */
 
     public void ClearLotes() // Limpa a lista de lotes e o arquivo JSON correspondente
     {
@@ -231,11 +261,11 @@ public class LotesHandler : MonoBehaviour
 [System.Serializable]
 public class AnimalList
 {
-    public List<Animal> animais;
+    public List<LoteData> animais;
 }
 
 [System.Serializable]
-public class Animal
+public class LoteData
 {
     public int loteID;
     public int brinco;
