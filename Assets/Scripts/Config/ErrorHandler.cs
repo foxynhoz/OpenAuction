@@ -4,6 +4,10 @@ using System.Collections;
 
 public class ErrorHandler : MonoBehaviour
 {
+    /*
+     * Esse script é responsável por exibir mensagens de erro na tela, utilizando uma animação para destacar a mensagem.
+     */
+
     [SerializeField] Animator Animator;
     public GameObject ErrorTXT;
 
@@ -14,6 +18,8 @@ public class ErrorHandler : MonoBehaviour
 
     public void showError(string errorCode)
     {
+        StopAllCoroutines(); // Para evitar que múltiplas mensagens de erro se sobreponham
+        Animator.Play("Error_Pop", -1, 0f); // Reinicia a animação
         StartCoroutine(Error(errorCode));
     }
 

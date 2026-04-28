@@ -11,6 +11,7 @@ public class _Settings : MonoBehaviour
     {
         string dataDir = Application.dataPath + "/LeilaoData/";
         string leiloesDir = dataDir + "Leiloes/";
+        string videosDir = dataDir + "Videos/";
 
         if (!Directory.Exists(dataDir))
         {
@@ -20,6 +21,11 @@ public class _Settings : MonoBehaviour
         {
             Directory.CreateDirectory(leiloesDir);
         }
+        if (!Directory.Exists(videosDir))
+        {
+            Directory.CreateDirectory(videosDir);
+        }
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
     }
@@ -29,6 +35,7 @@ public class FileHandler
 {
      static string dataDir = Application.dataPath + "/LeilaoData/";
      static string leiloesDir = dataDir + "Leiloes/";
+     static string videosDir = dataDir + "Videos/";
 
         public void UpdateFile(string fileName, string content) //atualizar o arquivo passado com o conteúdo passado
     {

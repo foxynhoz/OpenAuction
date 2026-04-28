@@ -73,8 +73,8 @@ public class Lance_Manager : MonoBehaviour
     {
         LanceValue = 0f;
         I_Lance.text = (LanceValue + entreLance).ToString();
-        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
-        fileHandler.UpdateFile("LoteAtual.txt", " ");
+        fileHandler.UpdateFile("LanceAtual.txt", "");
+        fileHandler.UpdateFile("LoteAtual.txt", "");
     }
 
     

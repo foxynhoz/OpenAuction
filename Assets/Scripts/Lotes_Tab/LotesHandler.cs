@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ListaHandler : MonoBehaviour
+public class LotesHandler : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
 
@@ -15,14 +15,15 @@ public class ListaHandler : MonoBehaviour
     public string leilaoAtivo = ""; // Nome do leilão ativo, usado para nomear o arquivo JSON
 
     [Header("Input Fields")]
-    [SerializeField] InputField fileNameInput;
-    [SerializeField] InputField searchInput;
-    [SerializeField] InputField idade_Field;
+    //[SerializeField] InputField fileNameInput;
+    //[SerializeField] InputField searchInput; Averiguar depois se é necessário ou se pode ser removido
+    
     [SerializeField] InputField loteID_Field;
     [SerializeField] InputField loteName_Field;
     [SerializeField] InputField loteBrinco_Field;
     [SerializeField] InputField loteSangue_Field;
     [SerializeField] InputField loteNascimento_Field;
+    [SerializeField] InputField loteIdade_Field;
     [SerializeField] InputField loteSexo_Field;
     [SerializeField] InputField loteUltimoParto_Field;
     [SerializeField] InputField lotePrevParto_Field;
@@ -41,7 +42,7 @@ public class ListaHandler : MonoBehaviour
         loteNascimento_Field.text = "";
         loteSexo_Field.text = "";
         loteUltimoParto_Field.text = "";
-        idade_Field.text = "";
+        loteIdade_Field.text = "";
         lotePrevParto_Field.text = "";
         loteProducao_Field.text = "";
         lotePeso_Field.text = "";
@@ -75,7 +76,7 @@ public class ListaHandler : MonoBehaviour
                 nome = loteName_Field.text,
                 sexo = loteSexo_Field.text,
                 nascimento = loteNascimento_Field.text,
-                idade = idade_Field.text,
+                idade = loteIdade_Field.text,
                 peso = lotePeso_Field.text,
                 ultimoParto = loteUltimoParto_Field.text,
                 prevParto = lotePrevParto_Field.text,
@@ -135,6 +136,7 @@ public class ListaHandler : MonoBehaviour
     }
 
 
+    /*
     public void novoLeilao()
     {
         if (string.IsNullOrEmpty(fileNameInput.text))
@@ -153,7 +155,7 @@ public class ListaHandler : MonoBehaviour
         lotes.Clear();
         SalvarLista();
     }
-
+    
     public void DeleteLote() // Exclui um lote específico da lista e atualiza o arquivo JSON
     {
         int SearchedloteID = int.Parse(searchInput.text);
@@ -169,6 +171,7 @@ public class ListaHandler : MonoBehaviour
             Debug.Log("Animal não encontrado para exclusão.");
         }
     }
+    */
 
     public void ClearLotes() // Limpa a lista de lotes e o arquivo JSON correspondente
     {
@@ -223,12 +226,6 @@ public class ListaHandler : MonoBehaviour
             Debug.Log("Arquivo não encontrado");
         }
     }
-
-
-
-
-
-
 }
 
 [System.Serializable]

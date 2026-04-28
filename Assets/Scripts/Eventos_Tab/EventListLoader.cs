@@ -15,10 +15,10 @@ public class EventListLoader : MonoBehaviour
 
     void Start()
     {
-        LoadJsonButtons();
+        LoadEventoJSONButtons();
     }
 
-    public void LoadJsonButtons()
+    public void LoadEventoJSONButtons()
     {
         string fullPath = Path.Combine(Application.dataPath, folderPath);
         string[] files = Directory.GetFiles(fullPath, "*.json");
@@ -55,7 +55,7 @@ public class EventListLoader : MonoBehaviour
             if (texts.Length >= 2)
             {
                 texts[1].text = fileName.ToUpper(); // nome do JSON
-                texts[0].text = itemCount.ToString();// aqui o número de itens
+                texts[0].text = itemCount.ToString(); // aqui o número de itens
             }
         }
     }

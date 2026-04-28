@@ -5,6 +5,16 @@ using UnityEngine.UIElements;
 
 public class Tab_Manager : MonoBehaviour
 {
+    /* Esse script é responsável por gerenciar a ativação e desativação 
+     * dos painéis de cada aba.
+     * 
+     * 0 - Eventos
+     * 1 - Lotes
+     * 2 - MesaOP
+     * 3 - OBS
+     * 4 - Info
+    */
+
     [SerializeField] GameObject Event_Panel;
     [SerializeField] GameObject Lotes_Panel;
     [SerializeField] GameObject MesaOP_Panel;
@@ -55,11 +65,3 @@ public class Tab_Manager : MonoBehaviour
     }
 }
 
-[ExecuteInEditMode]
-public class Teste : MonoBehaviour
-{
-    void Update()
-    {
-        Debug.Log("Rodando no editor");
-    }
-}

@@ -12,11 +12,11 @@ public class LoteListLoader : MonoBehaviour
     public Transform contentParent; // Content do Scroll View
     public GameObject buttonPrefab; // Prefab do botão
 
-    ListaHandler listaHandler;
+    LotesHandler listaHandler;
 
     public void RefreshLoteList()
     { 
-        listaHandler = FindObjectOfType<ListaHandler>();
+        listaHandler = FindObjectOfType<LotesHandler>();
 
         LoadLoteJSONButtons(Application.dataPath + folderPath + listaHandler.leilaoAtivo.ToLower() + ".json");
     }

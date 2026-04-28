@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 8712098611860084364}
   - component: {fileID: 6470190875258615743}
   - component: {fileID: 5214185471274402302}
-  - component: {fileID: 5038360657549173523}
+  - component: {fileID: 2523982165778383504}
   - component: {fileID: 7354139495043225308}
   m_Layer: 5
   m_Name: Eventos_Button
@@ -419,7 +419,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5038360657549173523
+--- !u!114 &2523982165778383504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -428,9 +428,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4109629036985616878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db8d7b039f66ff4e8d49c9232737acf, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c71897816ca7884da822d64c028ae21, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeleteEvent
+  m_EditorClassIdentifier: Assembly-CSharp::EventHandler
+  fileNameInput: {fileID: 0}
+  lotesHandler: {fileID: 0}
 --- !u!114 &7354139495043225308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,8 +640,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5038360657549173523}
-        m_TargetAssemblyTypeName: DeleteEvent, Assembly-CSharp
+      - m_Target: {fileID: 2523982165778383504}
+        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
         m_MethodName: Delete
         m_Mode: 1
         m_Arguments:
