@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class OBSSceneManager : MonoBehaviour
 {
+    /*
     [Header("UI")]
     public Transform containerBotoes;  // O pai onde os botões serão instanciados (ex: um VerticalLayoutGroup)
     public GameObject prefabBotao;     // Seu prefab de botão
@@ -50,4 +51,5 @@ public class OBSSceneManager : MonoBehaviour
         // Aqui você chama seu método do WebSocket pra trocar de cena no OBS
         // ex: obsWebSocket.SetCurrentScene(nomeDaCena);
     }
+    */
 }

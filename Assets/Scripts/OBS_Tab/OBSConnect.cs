@@ -12,9 +12,9 @@ using UnityEngine.UI;
 
 public class OBSWebSocket : MonoBehaviour
 {
-    ClientWebSocket ws;
-    [SerializeField] InputField IPfield;
-    [SerializeField] Text statusText;
+    public ClientWebSocket ws;
+    [SerializeField] public InputField IPfield;
+    [SerializeField] public Text statusText;
 
     private void Update()
     {
@@ -30,7 +30,7 @@ public class OBSWebSocket : MonoBehaviour
         }
     }
 
-    async Task Connect(string ip)
+    public async Task Connect(string ip)
     {
         ws = new ClientWebSocket();
         Uri uri = new Uri(ip);
@@ -41,7 +41,7 @@ public class OBSWebSocket : MonoBehaviour
         await Identify(); // envia Identify e recebe Identified
     }
 
-    async Task Disconect()
+    public async Task Disconect()
     {
         if (ws != null && ws.State == WebSocketState.Open)
         {
@@ -50,7 +50,7 @@ public class OBSWebSocket : MonoBehaviour
         }
     }
 
-    async Task Identify()
+    public async Task Identify()
     {
         string json = @"{
             ""op"": 1,
@@ -64,13 +64,13 @@ public class OBSWebSocket : MonoBehaviour
     }
 
 
-    async Task Send(string message)
+    public async Task Send(string message)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(message);
         await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    async Task<string> Receive()
+    public async Task<string> Receive()
     {
         var buffer = new byte[1024];
         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -79,37 +79,8 @@ public class OBSWebSocket : MonoBehaviour
         return msg;
     }
 
-    //FUNÇOES DOS BOTOES
 
-    [ContextMenu("Toggle Studio Mode")]
-    public void TriggerToggleStudioMode()
-    {
-        _ = ToggleStudioMode();
-    }
-
-    public int delay = 3000;
-
-
-    public void ConnectButton()
-    {
-        if (string.IsNullOrEmpty(IPfield.text))
-        {
-            Debug.LogError("IP do OBS não pode ser vazio");
-            return;
-        }
-        if (ws == null || ws.State == WebSocketState.Closed)
-        {
-            _ = Connect(IPfield.text);
-        }
-        else
-        {
-            _ = Disconect();
-        }
-
-    }
-    ////////////////////////////////////////////////////////
-
-    async Task TriggerTransition()
+    public async Task TriggerTransition()
     {
         string json = @"{
             ""op"": 6,
@@ -123,7 +94,7 @@ public class OBSWebSocket : MonoBehaviour
     }
 
     [ContextMenu("Get Scene List")]
-    async Task GetSceneList()
+    public async Task GetSceneList()
     {
         string json = @"{
             ""op"": 6,
@@ -138,7 +109,7 @@ public class OBSWebSocket : MonoBehaviour
         
     }
 
-    async Task ToggleStudioMode()
+    public async Task ToggleStudioMode()
     {
         string json = @"{
           ""op"": 6,
@@ -153,90 +124,4 @@ public class OBSWebSocket : MonoBehaviour
         await Send(json);
         Debug.Log("Toggle Studio Mode enviado");
     }
-
-
-
-    public async Task ToggleSource(string sceneName, string sourceName, bool visible)
-    {
-        // 1. Pega lista de itens da cena
-        string getListJson = $@"{{
-        ""op"": 6,
-        ""d"": {{
-            ""requestType"": ""GetSceneItemList"",
-            ""requestId"": ""getItems"",
-            ""requestData"": {{
-                ""sceneName"": ""{sceneName}""
-            }}
-        }}
-    }}";
-
-        await Send(getListJson);
-        string resposta = await Receive();
-
-        // 2. Procura o ID da source pelo nome
-        int sceneItemId = -1;
-
-        string[] split = resposta.Split('{');
-
-        foreach (var part in split)
-        {
-            if (part.Contains($@"""sourceName"":""{sourceName}"""))
-            {
-                int idIndex = part.IndexOf("sceneItemId");
-                int start = part.IndexOf(":", idIndex) + 1;
-                int end = part.IndexOf(",", start);
-
-                string idStr = part.Substring(start, end - start).Trim();
-                int.TryParse(idStr, out sceneItemId);
-                break;
-            }
-        }
-
-        if (sceneItemId == -1)
-        {
-            Debug.LogError("Source não encontrada");
-            return;
-        }
-
-        // 3. Liga/Desliga
-        string toggleJson = $@"{{
-        ""op"": 6,
-        ""d"": {{
-            ""requestType"": ""SetSceneItemEnabled"",
-            ""requestId"": ""toggle"",
-            ""requestData"": {{
-                ""sceneName"": ""{sceneName}"",
-                ""sceneItemId"": {sceneItemId},
-                ""sceneItemEnabled"": {visible.ToString().ToLower()}
-            }}
-        }}
-    }}";
-
-        await Send(toggleJson);
-
-    }
-}
-
-
-//MAGIA NEGRA
-public class Root
-{
-    public D d { get; set; }
-}
-
-public class D
-{
-    public ResponseData responseData { get; set; }
-}
-
-public class ResponseData
-{
-    public List<Scene> scenes { get; set; }
-}
-
-public class Scene
-{
-    public int sceneIndex { get; set; }
-    public string sceneName { get; set; }
-    public string sceneUuid { get; set; }
 }

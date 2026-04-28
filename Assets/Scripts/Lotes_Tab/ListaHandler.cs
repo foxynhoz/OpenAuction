@@ -48,6 +48,7 @@ public class ListaHandler : MonoBehaviour
         lotePai_Field.text = "";
         loteMae_Field.text = "";
         loteInfoExtras_Field.text = "";
+
     }
 
     private void Update()
@@ -87,9 +88,9 @@ public class ListaHandler : MonoBehaviour
             }
          }
 
-    public void setLoteManual() //Atualiza no OBS o lote atual com os dados do lote encontrado
+    public void setLoteManual(string loteID) //Atualiza no OBS o lote atual com os dados do lote encontrado
     {
-        int SearchedloteID = int.Parse(searchInput.text);
+        int SearchedloteID = int.Parse(loteID);
         Animal foundLote = lotes.Find(l => l.loteID == SearchedloteID);
 
         if (foundLote != null)
@@ -119,13 +120,14 @@ public class ListaHandler : MonoBehaviour
         sb.AppendLine(foundLote.infoExtras ?? "");
         sb.AppendLine(foundLote.sexo ?? "");
         sb.AppendLine(foundLote.sangue ?? "");
-        sb.AppendLine(foundLote.nascimento ?? "");
-        sb.AppendLine(foundLote.ultimoParto ?? "");
-        sb.AppendLine("Prev. Parto: " + (foundLote.prevParto ?? ""));
-        sb.AppendLine(foundLote.producao ?? "");
-        sb.AppendLine(foundLote.peso ?? "");
-        sb.AppendLine(foundLote.pai ?? "");
-        sb.AppendLine(foundLote.mae ?? "");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.idade) ? "" : $"Idade: {foundLote.idade}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.nascimento) ? "" : $"Nasc: {foundLote.nascimento}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"Últm Parto: {foundLote.ultimoParto}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.prevParto) ? "" : $"Prev. Parto: {foundLote.prevParto}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"Produção: {foundLote.producao}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.peso) ? "" : $"Peso: {foundLote.peso}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.pai) ? "" : $"Pai: {foundLote.pai}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"Mãe: {foundLote.mae}");
 
         fileHandler.UpdateFile("LoteAtual.txt", sb.ToString());
 
@@ -252,4 +254,13 @@ public class Animal
     public string peso;
     public string pai;
     public string mae;
+}
+
+public class LeilaoInfos
+{
+    public string nomeLeilao;
+    public string dataLeilao;
+    public string horarioLeilao;
+    public string localLeilao;
+    public string organizadorLeilao;
 }

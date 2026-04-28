@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Lance_Atual : MonoBehaviour
+public class Lance_Manager : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
     [SerializeField] ErrorHandler ErrorHandler;
@@ -74,6 +74,7 @@ public class Lance_Atual : MonoBehaviour
         LanceValue = 0f;
         I_Lance.text = (LanceValue + entreLance).ToString();
         fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
+        fileHandler.UpdateFile("LoteAtual.txt", " ");
     }
 
     
