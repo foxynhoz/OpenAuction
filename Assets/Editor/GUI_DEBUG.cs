@@ -24,9 +24,14 @@ public class TesteEditor : Editor
         {
             Tab_Manager.FindAnyObjectByType<Tab_Manager>().activatePanel(3);
         }
+        if (GUILayout.Button("Overlay Tab"))
+        {
+            Tab_Manager.FindAnyObjectByType<Tab_Manager>().activatePanel(5);
+        }
         if (GUILayout.Button("Info Tab"))
         {
             Tab_Manager.FindAnyObjectByType<Tab_Manager>().activatePanel(4);
         }
+        
     }
 }

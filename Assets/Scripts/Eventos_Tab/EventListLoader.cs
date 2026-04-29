@@ -5,9 +5,7 @@ using SFB;
 
 public class EventListLoader : MonoBehaviour
 {
-    [Header("Pasta dos JSONs")]
-    public string defaultFolderPath = "LeilaoData/Leiloes"; // Caminho padrão
-    public string folderPath = "LeilaoData/Leiloes";
+    FileHandler fileHandler = new FileHandler();
 
     [Header("UI")]
     public Transform contentParent; // Content do Scroll View
@@ -20,7 +18,7 @@ public class EventListLoader : MonoBehaviour
 
     public void LoadEventoJSONButtons()
     {
-        string fullPath = Path.Combine(Application.dataPath, folderPath);
+        string fullPath = fileHandler.GetFolderPath("Leiloes");
         string[] files = Directory.GetFiles(fullPath, "*.json");
 
         foreach (Transform child in contentParent)

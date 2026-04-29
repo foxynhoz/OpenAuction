@@ -7,8 +7,8 @@ public class EventButtonData : MonoBehaviour
 
     public void SetActiveEvent()
     {
-        LotesHandler listaHandler = FindObjectOfType<LotesHandler>();
-        listaHandler.CarregarLista(eventName, filePath); // Carrega a lista atual antes de definir o leilão ativo
+        LotesHandler lotesHandler = FindObjectOfType<LotesHandler>();
+        lotesHandler.CarregarLista(eventName, filePath); // Carrega a lista atual antes de definir o leilão ativo
 
         // Aqui você pode implementar a lógica para carregar o JSON usando o filePath
         Debug.Log("Botão clicado! Caminho do arquivo: " + filePath);

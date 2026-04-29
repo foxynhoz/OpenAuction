@@ -1,22 +1,25 @@
-using JetBrains.Annotations;
+Ôªøusing JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LotesHandler : MonoBehaviour
 {
+
     FileHandler fileHandler = new FileHandler();
 
     public List<LoteData> lotes = new List<LoteData>();
 
     [SerializeField] Text leilACTIVE_TXT;
-    public string leilaoAtivo = ""; // Nome do leil„o ativo, usado para nomear o arquivo JSON
+    public string leilaoAtivo = ""; // Nome do leil√£o ativo, usado para nomear o arquivo JSON
 
     [Header("Input Fields")]
     //[SerializeField] InputField fileNameInput;
-    //[SerializeField] InputField searchInput; Averiguar depois se È necess·rio ou se pode ser removido
+    //[SerializeField] InputField searchInput; Averiguar depois se √© necess√°rio ou se pode ser removido
     
     [SerializeField] InputField loteID_Field;
     [SerializeField] InputField loteName_Field;
@@ -35,26 +38,30 @@ public class LotesHandler : MonoBehaviour
 
     private void Start()
     {
-        loteID_Field.text = "";
-        loteName_Field.text = "";
-        loteBrinco_Field.text = "";
-        loteSangue_Field.text = "";
-        loteNascimento_Field.text = "";
-        loteSexo_Field.text = "";
-        loteUltimoParto_Field.text = "";
-        loteIdade_Field.text = "";
-        lotePrevParto_Field.text = "";
-        loteProducao_Field.text = "";
-        lotePeso_Field.text = "";
-        lotePai_Field.text = "";
-        loteMae_Field.text = "";
-        loteInfoExtras_Field.text = "";
-
+        if (gameObject.name == "===LOTES===")
+        {
+            loteID_Field.text = "";
+            loteName_Field.text = "";
+            loteBrinco_Field.text = "";
+            loteSangue_Field.text = "";
+            loteNascimento_Field.text = "";
+            loteSexo_Field.text = "";
+            loteUltimoParto_Field.text = "";
+            loteIdade_Field.text = "";
+            lotePrevParto_Field.text = "";
+            loteProducao_Field.text = "";
+            lotePeso_Field.text = "";
+            lotePai_Field.text = "";
+            loteMae_Field.text = "";
+            loteInfoExtras_Field.text = "";
+        }
     }
 
     private void Update()
     {
-        leilACTIVE_TXT.text = "LEIL√O ATIVO: " + leilaoAtivo;
+        if(gameObject.name == "===LOTES===")
+        { leilACTIVE_TXT.text = "LEIL√ÉO ATIVO: " + leilaoAtivo; }
+        
     }
 
 
@@ -63,13 +70,14 @@ public class LotesHandler : MonoBehaviour
     {
         if (leilaoAtivo == "")
         {
-            Debug.LogError("Nenhum leil„o ativo. Defina o nome do leil„o antes de adicionar lotes.");
+            Debug.LogError("Nenhum leil√£o ativo. Defina o nome do leil√£o antes de adicionar lotes.");
             return;
         }
         else
         {
             lotes.Add(new LoteData
             {
+                hashID = Guid.NewGuid().ToString(),
                 loteID = int.TryParse(loteID_Field.text, out int loteID) ? loteID : 0,
                 brinco = int.TryParse(loteBrinco_Field.text, out int brinco) ? brinco : 0,
                 sangue = loteSangue_Field.text,
@@ -101,7 +109,7 @@ public class LotesHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("LoteData n„o encontrado.");
+            Debug.Log("LoteData n√£o encontrado.");
         }
     }
 
@@ -120,7 +128,7 @@ public class LotesHandler : MonoBehaviour
     }
 
     /*
-   public void DeleteLote() // Exclui um lote especÌfico da lista e atualiza o arquivo JSON
+   public void DeleteLote() // Exclui um lote espec√≠fico da lista e atualiza o arquivo JSON
    {
        int SearchedloteID = int.Parse(searchInput.text);
        LoteData foundLote = lotes.Find(l => l.loteID == SearchedloteID);
@@ -128,47 +136,46 @@ public class LotesHandler : MonoBehaviour
        {
            lotes.Remove(foundLote);
            SalvarLista();
-           Debug.Log("LoteData excluÌdo: " + foundLote.nome);
+           Debug.Log("LoteData exclu√≠do: " + foundLote.nome);
        }
        else
        {
-           Debug.Log("LoteData n„o encontrado para exclus„o.");
+           Debug.Log("LoteData n√£o encontrado para exclus√£o.");
        }
    }
    */
 
     void SaveIndependentTXTS(LoteData foundLote)
     {
-        fileHandler.UpdateFile("/OBS_Stuff/LoteID.txt", foundLote.loteID.ToString());
-        fileHandler.UpdateFile("/OBS_Stuff/brinco.txt", foundLote.brinco.ToString());
-        fileHandler.UpdateFile("/OBS_Stuff/nome.txt", foundLote.nome ?? "");
-        fileHandler.UpdateFile("/OBS_Stuff/infoExtras.txt", foundLote.infoExtras ?? "");
-        fileHandler.UpdateFile("/OBS_Stuff/sexo.txt", foundLote.sexo ?? "");
-        fileHandler.UpdateFile("/OBS_Stuff/sangue.txt", foundLote.sangue ?? "");
+        fileHandler.UpdateFile("LoteID.txt", foundLote.loteID.ToString(),"OBS_Stuff", true);
+        fileHandler.UpdateFile("brinco.txt", foundLote.brinco.ToString(),"OBS_Stuff", true);
+        fileHandler.UpdateFile("nome.txt", foundLote.nome ?? "","OBS_Stuff", true);
+        fileHandler.UpdateFile("infoExtras.txt", foundLote.infoExtras ?? "","OBS_Stuff", true);
+        fileHandler.UpdateFile("sexo.txt", foundLote.sexo ?? "","OBS_Stuff", true);
+        fileHandler.UpdateFile("sangue.txt", foundLote.sangue ?? "","OBS_Stuff", true);
+        fileHandler.UpdateFile("idade.txt",
+            string.IsNullOrWhiteSpace(foundLote.idade) ? "" : $"Idade: {foundLote.idade}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/idade.txt",
-            string.IsNullOrWhiteSpace(foundLote.idade) ? "" : $"Idade: {foundLote.idade}");
+        fileHandler.UpdateFile("nascimento.txt",
+            string.IsNullOrWhiteSpace(foundLote.nascimento) ? "" : $"Nasc: {foundLote.nascimento}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/nascimento.txt",
-            string.IsNullOrWhiteSpace(foundLote.nascimento) ? "" : $"Nasc: {foundLote.nascimento}");
+        fileHandler.UpdateFile("ultimoParto.txt",
+            string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"√öltm Parto: {foundLote.ultimoParto}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/ultimoParto.txt",
-            string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"⁄ltm Parto: {foundLote.ultimoParto}");
+        fileHandler.UpdateFile("prevParto.txt",
+            string.IsNullOrWhiteSpace(foundLote.prevParto) ? "" : $"Prev. Parto: {foundLote.prevParto}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/prevParto.txt",
-            string.IsNullOrWhiteSpace(foundLote.prevParto) ? "" : $"Prev. Parto: {foundLote.prevParto}");
+        fileHandler.UpdateFile("producao.txt",
+            string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"Produ√ß√£o: {foundLote.producao}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/producao.txt",
-            string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"ProduÁ„o: {foundLote.producao}");
+        fileHandler.UpdateFile("peso.txt",
+            string.IsNullOrWhiteSpace(foundLote.peso) ? "" : $"Peso: {foundLote.peso}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/peso.txt",
-            string.IsNullOrWhiteSpace(foundLote.peso) ? "" : $"Peso: {foundLote.peso}");
+        fileHandler.UpdateFile("pai.txt",
+            string.IsNullOrWhiteSpace(foundLote.pai) ? "" : $"Pai: {foundLote.pai}", "OBS_Stuff", true);
 
-        fileHandler.UpdateFile("/OBS_Stuff/pai.txt",
-            string.IsNullOrWhiteSpace(foundLote.pai) ? "" : $"Pai: {foundLote.pai}");
-
-        fileHandler.UpdateFile("/OBS_Stuff/mae.txt",
-            string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"M„e: {foundLote.mae}");
+        fileHandler.UpdateFile("mae.txt",
+            string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"M√£e: {foundLote.mae}", "OBS_Stuff", true);
 
         Debug.Log("Lote salvo em arquivos individuais para OBS");
     }
@@ -185,14 +192,14 @@ public class LotesHandler : MonoBehaviour
         sb.AppendLine(foundLote.sangue ?? "");
         sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.idade) ? "" : $"Idade: {foundLote.idade}");
         sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.nascimento) ? "" : $"Nasc: {foundLote.nascimento}");
-        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"⁄ltm Parto: {foundLote.ultimoParto}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.ultimoParto) ? "" : $"√öltm Parto: {foundLote.ultimoParto}");
         sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.prevParto) ? "" : $"Prev. Parto: {foundLote.prevParto}");
-        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"ProduÁ„o: {foundLote.producao}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.producao) ? "" : $"Produ√ß√£o: {foundLote.producao}");
         sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.peso) ? "" : $"Peso: {foundLote.peso}");
         sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.pai) ? "" : $"Pai: {foundLote.pai}");
-        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"M„e: {foundLote.mae}");
+        sb.AppendLine(string.IsNullOrWhiteSpace(foundLote.mae) ? "" : $"M√£e: {foundLote.mae}");
 
-        fileHandler.UpdateFile("LoteAtual.txt", sb.ToString());
+        fileHandler.UpdateFile("LoteAtual.txt", sb.ToString(), "Data", true);
 
         Debug.Log("Lote salvo em LoteAtual.txt");
     }
@@ -200,7 +207,7 @@ public class LotesHandler : MonoBehaviour
     void SaveToGCLoteJSON(LoteData foundLote)
     {
         string json = JsonUtility.ToJson(foundLote, true);
-        fileHandler.UpdateFile("GCLote.json", json);
+        fileHandler.UpdateFile("GCLote.json", json, "Data", true);
     }
 
     public void ClearLotes() // Limpa a lista de lotes e o arquivo JSON correspondente
@@ -208,12 +215,12 @@ public class LotesHandler : MonoBehaviour
         lotes.Clear();
         if (leilaoAtivo != null)
         {
-            fileHandler.UpdateFile("Leiloes/" + leilaoAtivo + ".json", JsonUtility.ToJson(new AnimalList { animais = lotes }, true));
+            fileHandler.UpdateFile(leilaoAtivo + ".json", JsonUtility.ToJson(new AnimalList { animais = lotes }, true), "Leiloes", true);
             Debug.Log("Lista de lotes limpa");
         }
         else
         {
-            Debug.LogError("Nenhum leil„o ativo. Defina o nome do leil„o antes de limpar os lotes.");
+            Debug.LogError("Nenhum leil√£o ativo. Defina o nome do leil√£o antes de limpar os lotes.");
         }
     }
 
@@ -223,7 +230,7 @@ public class LotesHandler : MonoBehaviour
     {
         if (leilaoAtivo == null)
         {
-            Debug.LogError("Nenhum leil„o ativo. Defina o nome do leil„o antes de salvar a lista.");
+            Debug.LogError("Nenhum leil√£o ativo. Defina o nome do leil√£o antes de salvar a lista.");
             return;
         }
 
@@ -232,7 +239,7 @@ public class LotesHandler : MonoBehaviour
 
         string json = JsonUtility.ToJson(wrapper, true);
 
-        fileHandler.UpdateFile("Leiloes/" + leilaoAtivo.ToLower() + ".json", json);
+        fileHandler.UpdateFile(leilaoAtivo.ToLower() + ".json", json, "Leiloes", true);
 
         Debug.Log("Lista salva");
     }
@@ -253,9 +260,28 @@ public class LotesHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Arquivo n„o encontrado");
+            Debug.Log("Arquivo n√£o encontrado");
         }
     }
+
+    public void DeleteLote()
+    {
+        LoteButtonData data = GetComponent<LoteButtonData>();
+
+        if (data == null || data.lotesHandler == null)
+        {
+            Debug.LogError("Manager n√£o encontrado");
+            return;
+        }
+
+
+        data.lotesHandler.lotes.RemoveAll(l => l.hashID == data.hashID);
+
+        data.lotesHandler.SalvarLista();
+
+        Destroy(data.gameObject);
+    }
+
 }
 
 [System.Serializable]
@@ -267,6 +293,7 @@ public class AnimalList
 [System.Serializable]
 public class LoteData
 {
+    public string hashID;
     public int loteID;
     public int brinco;
     public string nome;

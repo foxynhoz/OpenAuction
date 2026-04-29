@@ -1,0 +1,11 @@
+
+        {
+            "fontSize": 0,
+            "opacity": 1.0,
+            "paddingX": 0,
+            "paddingY": 5,
+            "borderRadius": 0,
+            "GCwidth": 0,
+            "bgColor": "rgba(0,0,0,1)",
+            "separator": "•"
+        }

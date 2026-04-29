@@ -1,140 +1,63 @@
 ﻿using UnityEngine;
 using System.IO;
-using UnityEditor.ShaderGraph;
 using System.Globalization;
 using System.Collections;
+using UnityEngine.UI;
+using NUnit.Framework.Constraints;
 
 public class GC_Manager : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
 
+    [SerializeField] Slider FontSize_Slider;
+    [SerializeField] Slider GCwidth_Slider;
+    [SerializeField] Slider BorderRadius_Slider;
+    [SerializeField] Slider PaddingX_Slider;
+    [SerializeField] Slider PaddingY_Slider;
+
+    [SerializeField] Slider R_Slider;
+    [SerializeField] Slider G_Slider;
+    [SerializeField] Slider B_Slider;
+    [SerializeField] Slider A_Slider;
+
     [Range(10, 50)]
     public int fontsize = 20;
 
+    [Range(100, 2000)]
+    public int GCwidth = 1000;
+    
+    [Range(0, 100)]
+    public int borderRadius = 0;
+    
+    [Range(0, 100)]
+    public int paddingX = 0;
+
+    [Range(0, 100)]
+    public int paddingY = 0;
+
     public Color color;
 
-    string HTML = @"
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset=""UTF-8"">
-
-    <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        color: white;
-
-        margin: 0;
-        height: 100vh;
-
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-    }
-
-    .BottomInfo {
-        position: absolute;
-        bottom: 20px;
-
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-
-        width: 1920px;
-        font-size: 20px;
-    }
-
-    /* caixas */
-    .item {
-        background-color: 0;
-        padding: 0;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
-    }
-
-    /* separador (AGORA FORA da caixa) */
-    .sep {
-	    transform: scale(2.0);
-        color: white;
-        margin: 0 10px;
-        font-size: 25px;
-        opacity: 1;
-    }
-    </style>
-
-    </head>
-
-    <body>
-
-    <div class=""BottomInfo""></div>
-    <script>
-    async function atualizar() {
-        // 🔹 dados (texto)
-        const dataResponse = await fetch(""GCLote.json?t="" + Date.now());
-        const data = await dataResponse.json();
-
-        // 🔹 estilo (visual)
-        const styleResponse = await fetch(""GCStyle.json?t="" + Date.now());
-        const style = await styleResponse.json();
-
-        const container = document.querySelector("".BottomInfo"");
-
-        const itens = [
-            data.idade,
-            data.sexo,
-            data.peso,
-            data.sangue,
-            data.nascimento,
-            data.ultimoParto,
-            data.prevParto,
-            data.producao,
-            data.mae,
-            data.pai,
-            data.infoExtras
-        ].filter(v => v && v.trim() !== """");
-
-        container.innerHTML = """";
-
-        itens.forEach((texto, index) => {
-
-            if (index > 0) {
-                const sep = document.createElement(""span"");
-                sep.className = ""sep"";
-                sep.innerText = style.separator || ""•"";
-                container.appendChild(sep);
-            }
-
-            const div = document.createElement(""div"");
-            div.className = ""item"";
-            div.innerText = texto;
-
-            // 🎨 aplica estilo vindo do JSON
-            div.style.backgroundColor = style.bgColor;
-            div.style.borderRadius = style.borderRadius + ""px"";
-            div.style.padding = style.paddingY + ""px "" + style.paddingX + ""px"";
-
-            container.appendChild(div);
-        });
-
-        // 🎨 estilo geral
-        container.style.fontSize = style.fontSize + ""px"";
-        container.style.opacity = style.opacity;
-    }
-    setInterval(atualizar, 500);
-    </script>
-
-    </body>
-    </html>";
+    string HTML = File.ReadAllText(Application.streamingAssetsPath + "/GCLote.html");
 
     void Start()
     {
-        if (!File.Exists(Application.dataPath + " / LeilaoData/GCLote.html") || !File.Exists(Application.dataPath + "/LeilaoData/GCStyle.json"))
+
+        if (!File.Exists(Application.streamingAssetsPath + "/GCLote.html") || !File.Exists(Application.streamingAssetsPath + "/GCStyle.json"))
         {
             UpdateHTML_Data();
         }
         StartCoroutine(UpdateStyle());
+
+    }
+
+    void Update()
+    {
+        fontsize = (int)FontSize_Slider.value;
+        GCwidth = (int)GCwidth_Slider.value;
+        borderRadius = (int)BorderRadius_Slider.value;
+        paddingX = (int)PaddingX_Slider.value;
+        paddingY = (int)PaddingY_Slider.value;
+        color = new Color(R_Slider.value, G_Slider.value, B_Slider.value,A_Slider.value);
     }
 
     [ContextMenu("Update HTML e JSON Style")]
@@ -145,17 +68,17 @@ public class GC_Manager : MonoBehaviour
         {
             ""fontSize"": " + fontsize + @",
             ""opacity"": 1.0,
-            ""paddingX"": 20,
-            ""paddingY"": 5,
-            ""borderRadius"": 0,
-            ""bgColor"": ""rgba(" + (int)(color.r * 255) + "," + (int)(color.g * 255) + "," + (int)(color.b * 255) + "," + color.a + @")"",
+            ""paddingX"": " + paddingX + @",
+            ""paddingY"": " + paddingY + @",
+            ""borderRadius"": " + borderRadius + @",
+            ""GCwidth"": " + GCwidth + @",
+            ""bgColor"": ""rgba("+ color.r + "," + color.g + "," + color.b + "," + color.a.ToString(CultureInfo.InvariantCulture) + @")"",
             ""separator"": ""•""
         }";
 
-        string json = GCStyleJSON;
 
-        fileHandler.UpdateFile("GCStyle.json", json);
-        fileHandler.UpdateFile("GCLote.html", HTML);
+        fileHandler.UpdateFile("GCStyle.json", GCStyleJSON, "Data", false);
+        fileHandler.UpdateFile("GCLote.html", HTML, "Data", false);
         
     }
 

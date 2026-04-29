@@ -16,9 +16,9 @@ public class _Settings : MonoBehaviour
     public void StartupConfig()
     {
         string dataDir = Application.dataPath + "/LeilaoData/";
-        string leiloesDir = dataDir + "Leiloes/";
-        string obsDir = dataDir + "OBS_Stuff/";
-        string videosDir = dataDir + "Videos/";
+        string leiloesDir = dataDir + "/Leiloes/";
+        string obsDir = dataDir + "/OBS_Stuff/";
+        string videosDir = dataDir + "/Videos/";
 
         if (!Directory.Exists(dataDir))
         {
@@ -41,21 +41,79 @@ public class _Settings : MonoBehaviour
 
 public class FileHandler
 {
-     static string dataDir = Application.dataPath + "/LeilaoData/";
-     static string leiloesDir = dataDir + "Leiloes/";
-     static string videosDir = dataDir + "Videos/";
+    static string dataDir = Application.dataPath + "/LeilaoData/";
+    static string leiloesDir = dataDir + "/Leiloes/";
+    static string obsDir = dataDir + "/OBS_Stuff/";
+    static string videosDir = dataDir + "/Videos/";
 
-        public void UpdateFile(string fileName, string content) //atualizar o arquivo passado com o conteúdo passado
+    public void UpdateFile(string fileName, string content, string folderName, bool DebugLog) //atualizar o arquivo passado com o conteúdo passado
+    {
+        switch (folderName)
         {
-            if (!Directory.Exists(dataDir))
-            {
-                Directory.CreateDirectory(dataDir);
-            }
+            case "Data":
+                if (!Directory.Exists(dataDir))
+                {
+                    Directory.CreateDirectory(dataDir);
+                }
+                File.WriteAllText(dataDir + fileName, content);
+                break;
+            case "OBS_Stuff":
+                if (!Directory.Exists(obsDir))
+                {
+                    Directory.CreateDirectory(obsDir);
+                }
+                File.WriteAllText(obsDir + fileName, content);
+                break;
+            case "Leiloes":
+                if (!Directory.Exists(leiloesDir))
+                {
+                    Directory.CreateDirectory(leiloesDir);
+                }
+                File.WriteAllText(leiloesDir + fileName, content);
+                break;
 
-            File.WriteAllText(dataDir + fileName, content);
+            case "Videos":
+                if (!Directory.Exists(videosDir))
+                {
+                    Directory.CreateDirectory(videosDir);
+                }
+                File.WriteAllText(videosDir + fileName, content);
+                break;
+
+            default:
+                Debug.LogError("Invalid folder name: " + folderName);
+                return;
         }
 
- }
+
+        switch (DebugLog)
+        {
+            case true:
+                Debug.Log("Updating file " + fileName + " in " + folderName);
+                break;
+            case false:
+                break;
+        }
+    }
+
+    public string GetFolderPath(string folderName)
+    {
+        switch (folderName)
+        {
+            case "Data":
+                return dataDir;
+            case "OBS_Stuff":
+                return obsDir;
+            case "Leiloes":
+                return leiloesDir;
+            case "Videos":
+                return videosDir;
+            default:
+                Debug.LogError("Invalid folder name: " + folderName);
+                return null;
+        }
+    }
+}
 
 
     

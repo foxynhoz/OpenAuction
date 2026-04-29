@@ -5,6 +5,7 @@ using System.IO;
 
 public class EventHandler : MonoBehaviour
 {
+    FileHandler fileHandler = new FileHandler();
     [SerializeField] InputField fileNameInput;
     LotesHandler lotesHandler;
     ErrorHandler errorHandler;
@@ -23,7 +24,7 @@ public class EventHandler : MonoBehaviour
             return;
         }
 
-        if (File.Exists(Application.dataPath + "/LeilaoData/Leiloes/" + fileNameInput.text.ToLower() + ".json"))
+        if (File.Exists(fileHandler.GetFolderPath("Leiloes") + fileNameInput.text.ToLower() + ".json"))
         {
             Debug.LogError("Já existe um leilão com esse nome. Escolha outro nome ou exclua o leilão existente.");
             errorHandler.showError("Já existe um leilão com esse nome. Escolha outro nome ou exclua o leilão existente.");

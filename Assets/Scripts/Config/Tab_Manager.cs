@@ -13,6 +13,7 @@ public class Tab_Manager : MonoBehaviour
      * 2 - MesaOP
      * 3 - OBS
      * 4 - Info
+     * 5 - Overlay
     */
 
     [SerializeField] GameObject Event_Panel;
@@ -20,7 +21,7 @@ public class Tab_Manager : MonoBehaviour
     [SerializeField] GameObject MesaOP_Panel;
     [SerializeField] GameObject OBS_Panel;
     [SerializeField] GameObject Info_Panel;
-    
+    [SerializeField] GameObject Overlay_Panel;
   
     public void activatePanel(int panelIndex)
     {
@@ -31,6 +32,7 @@ public class Tab_Manager : MonoBehaviour
                 Lotes_Panel.SetActive(false);
                 MesaOP_Panel.SetActive(false);
                 OBS_Panel.SetActive(false);
+                Overlay_Panel.SetActive(false);
                 Info_Panel.SetActive(false);
                 break;
             case 1:
@@ -38,6 +40,7 @@ public class Tab_Manager : MonoBehaviour
                 Lotes_Panel.SetActive(true);
                 MesaOP_Panel.SetActive(false);
                 OBS_Panel.SetActive(false);
+                Overlay_Panel.SetActive(false);
                 Info_Panel.SetActive(false);
                 break;
             case 2:
@@ -45,6 +48,7 @@ public class Tab_Manager : MonoBehaviour
                 Lotes_Panel.SetActive(false);
                 MesaOP_Panel.SetActive(true);
                 OBS_Panel.SetActive(false);
+                Overlay_Panel.SetActive(false);
                 Info_Panel.SetActive(false);
                 break;
             case 3:
@@ -52,6 +56,7 @@ public class Tab_Manager : MonoBehaviour
                 Lotes_Panel.SetActive(false);
                 MesaOP_Panel.SetActive(false);
                 OBS_Panel.SetActive(true);
+                Overlay_Panel.SetActive(false);
                 Info_Panel.SetActive(false);
                 break;
             case 4:
@@ -59,7 +64,16 @@ public class Tab_Manager : MonoBehaviour
                 Lotes_Panel.SetActive(false);
                 MesaOP_Panel.SetActive(false);
                 OBS_Panel.SetActive(false);
+                Overlay_Panel.SetActive(false);
                 Info_Panel.SetActive(true);
+                break;
+             case 5:
+                Event_Panel.SetActive(false);
+                Lotes_Panel.SetActive(false);
+                MesaOP_Panel.SetActive(false);
+                OBS_Panel.SetActive(false);
+                Overlay_Panel.SetActive(true);
+                Info_Panel.SetActive(false);    
                 break;
         }
     }

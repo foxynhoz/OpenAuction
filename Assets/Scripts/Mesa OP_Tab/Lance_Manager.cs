@@ -22,7 +22,7 @@ public class Lance_Manager : MonoBehaviour
         I_Lance.text = (LanceValue + entreLance).ToString();
         I_EntreLance.text = entreLance.ToString();
 
-        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
+        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString(), "Data", true);
     }
 
     void Update()
@@ -41,7 +41,7 @@ public class Lance_Manager : MonoBehaviour
                 I_Lance.text = (LanceValue + entreLance).ToString();
                 I_Lance.Select();
                 I_Lance.ActivateInputField();
-                fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
+                fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString(), "Data", true);
             }
             else
             {
@@ -60,7 +60,7 @@ public class Lance_Manager : MonoBehaviour
     {
         LanceValue = float.Parse(LanceAnterior_TXT.text);
         I_Lance.text = (LanceValue + entreLance).ToString();
-        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString());
+        fileHandler.UpdateFile("LanceAtual.txt", LanceValue.ToString(), "Data", true);
     }
 
     public void changeEntreLance() //trocar o valor do entre lance
@@ -73,8 +73,9 @@ public class Lance_Manager : MonoBehaviour
     {
         LanceValue = 0f;
         I_Lance.text = (LanceValue + entreLance).ToString();
-        fileHandler.UpdateFile("LanceAtual.txt", "");
-        fileHandler.UpdateFile("LoteAtual.txt", "");
+        LanceAnterior_TXT.text = "0";
+        fileHandler.UpdateFile("LanceAtual.txt", "", "Data", true);
+        fileHandler.UpdateFile("LoteAtual.txt", "", "Data", true);
     }
 
     

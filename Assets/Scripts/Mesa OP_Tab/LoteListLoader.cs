@@ -3,32 +3,36 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LoteListLoader : MonoBehaviour
-{
-    [Header("Pasta dos JSONs")]
-    string defaultFolderPath = "/LeilaoData/Leiloes"; // Caminho padrão
-    string folderPath = "/LeilaoData/Leiloes/";
+
+{   FileHandler fileHandler = new FileHandler();
 
     [Header("UI")]
     public Transform contentParent; // Content do Scroll View
     public GameObject buttonPrefab; // Prefab do botão
 
-    LotesHandler listaHandler;
+    [SerializeField] LotesHandler listaHandler;
 
     public void RefreshLoteList()
     { 
-        listaHandler = FindObjectOfType<LotesHandler>();
-
-        LoadLoteJSONButtons(Application.dataPath + folderPath + listaHandler.leilaoAtivo.ToLower() + ".json");
+        LoadLoteJSONButtons();
     }
 
-    public void LoadLoteJSONButtons(string filePath)
+    public void LoadLoteJSONButtons()
     {
-        Debug.Log("Carregando JSON: " + filePath);
+        if(string.IsNullOrEmpty(listaHandler.leilaoAtivo))
+        {
+            return;
+        }
+
+
+        JsonData data = JsonUtility.FromJson<JsonData>
+            (File.ReadAllText(fileHandler.GetFolderPath("Leiloes") + listaHandler.leilaoAtivo.ToLower() + ".json")
+            );
+
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
-        string jsonText = File.ReadAllText(filePath);
-        JsonData data = JsonUtility.FromJson<JsonData>(jsonText);
+       
 
         if (data == null || data.animais == null)
         {
@@ -39,14 +43,36 @@ public class LoteListLoader : MonoBehaviour
         foreach (var animal in data.animais)
         {
             GameObject btnObj = Instantiate(buttonPrefab, contentParent);
-            LoteButtonData loteData = btnObj.GetComponent<LoteButtonData>();
+            LoteButtonData loteButtonData = btnObj.GetComponent<LoteButtonData>();
+            loteButtonData.lotesHandler = listaHandler;
 
-            loteData.LoteID = animal.loteID;
+            loteButtonData.hashID = animal.hashID;
+            loteButtonData.fileName = listaHandler.leilaoAtivo.ToLower() + ".json";
+            loteButtonData.filePath = fileHandler.GetFolderPath("Leiloes") + loteButtonData.fileName;
 
-            Text txt = btnObj.GetComponentInChildren<Text>();
+            loteButtonData.LoteID = animal.loteID;
+            loteButtonData.brinco = animal.brinco;
+            loteButtonData.nome = animal.nome;
+            loteButtonData.infoExtras = animal.infoExtras;
+            loteButtonData.sexo = animal.sexo;
+            loteButtonData.idade = animal.idade;
+            loteButtonData.sangue = animal.sangue;
+            loteButtonData.nascimento = animal.nascimento;
+            loteButtonData.ultimoParto = animal.ultimoParto;
+            loteButtonData.prevParto = animal.prevParto;
+            loteButtonData.producao = animal.producao;
+            loteButtonData.peso = animal.peso;
+            loteButtonData.pai = animal.pai;
+            loteButtonData.mae = animal.mae;
 
-            if (txt != null)
-                txt.text = animal.loteID.ToString();
+            Text[] txts = btnObj.GetComponentsInChildren<Text>();
+
+            if (txts.Length >= 2)
+            {
+                txts[1].text = animal.nome.ToUpper(); // nome do JSON
+                txts[0].text = animal.loteID.ToString(); // aqui o número de itens
+            }
+            txts[0].text = animal.loteID.ToString(); // aqui o número de itens
         }
     }
 
