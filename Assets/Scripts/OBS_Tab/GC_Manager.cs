@@ -22,20 +22,20 @@ public class GC_Manager : MonoBehaviour
     [SerializeField] Slider A_Slider;
 
     [Range(10, 50)]
-    public int fontsize;
+    public int fontsize = 20;
 
     [Range(100, 2000)]
-    public int GCwidth;
+    public int GCwidth = 1000;
     
     [Range(0, 100)]
-    public int borderRadius;
+    public int borderRadius = 0;
     
     [Range(0, 100)]
-    public int paddingX;
+    public int paddingX = 0;
 
     [Range(0, 100)]
-    public int paddingY;
-    public int sepSize;
+    public int paddingY = 0;
+    public int sepSize = 20;
 
     public Color color;
     string HTML;
