@@ -95,7 +95,21 @@ public class LotesHandler : MonoBehaviour
             });
             SalvarLista();
             }
-         }
+            loteID_Field.text = "";
+            loteName_Field.text = "";
+            loteBrinco_Field.text = "";
+            loteSangue_Field.text = "";
+            loteNascimento_Field.text = "";
+            loteSexo_Field.text = "";
+            loteUltimoParto_Field.text = "";
+            loteIdade_Field.text = "";
+            lotePrevParto_Field.text = "";
+            loteProducao_Field.text = "";
+            lotePeso_Field.text = "";
+            lotePai_Field.text = "";
+            loteMae_Field.text = "";
+            loteInfoExtras_Field.text = "";
+    }
 
     public void setLoteManual(string loteID) //Atualiza no OBS o lote atual com os dados do lote encontrado
     {

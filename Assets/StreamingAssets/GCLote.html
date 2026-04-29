@@ -44,7 +44,7 @@
 	    transform: scale(2.0);
         color: white;
         margin: 0 10px;
-        font-size: 25px;
+        font-size: 15px;
         opacity: 1;
     }
     </style>
@@ -100,10 +100,13 @@
             div.style.borderRadius = style.borderRadius + "px";
             div.style.padding = style.paddingY + "px " + style.paddingX + "px";
             
-
             container.appendChild(div);
         });
-
+		
+		document.querySelectorAll(".sep").forEach(sep => {
+			
+			sep.style.fontSize = style.sepSize + "px";
+		});
         // 🎨 estilo geral
         container.style.fontSize = style.fontSize + "px";
         container.style.opacity = style.opacity;
