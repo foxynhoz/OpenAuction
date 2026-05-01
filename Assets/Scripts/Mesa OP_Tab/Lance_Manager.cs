@@ -75,6 +75,7 @@ public class Lance_Manager : MonoBehaviour
         I_Lance.text = (LanceValue + entreLance).ToString();
         LanceAnterior_TXT.text = "0";
         fileHandler.UpdateFile("LanceAtual.txt", "", "Data", true);
+        fileHandler.UpdateFile("GCLote.json", "", "Data", true);
         fileHandler.UpdateFile("LoteAtual.txt", "", "Data", true);
     }
 

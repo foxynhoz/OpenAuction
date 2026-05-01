@@ -10,23 +10,25 @@ public class LoteListLoader : MonoBehaviour
     public Transform contentParent; // Content do Scroll View
     public GameObject buttonPrefab; // Prefab do botão
 
-    [SerializeField] LotesHandler listaHandler;
+    [SerializeField] LotesHandler lotesHandler;
 
     public void RefreshLoteList()
     { 
+        lotesHandler.CarregarLista(
+            lotesHandler.leilaoAtivo, fileHandler.GetFolderPath("Leiloes") + lotesHandler.leilaoAtivo.ToLower() + ".json");
         LoadLoteJSONButtons();
     }
 
     public void LoadLoteJSONButtons()
     {
-        if(string.IsNullOrEmpty(listaHandler.leilaoAtivo))
+        if(string.IsNullOrEmpty(lotesHandler.leilaoAtivo))
         {
             return;
         }
 
 
         JsonData data = JsonUtility.FromJson<JsonData>
-            (File.ReadAllText(fileHandler.GetFolderPath("Leiloes") + listaHandler.leilaoAtivo.ToLower() + ".json")
+            (File.ReadAllText(fileHandler.GetFolderPath("Leiloes") + lotesHandler.leilaoAtivo.ToLower() + ".json")
             );
 
         foreach (Transform child in contentParent)
@@ -44,10 +46,10 @@ public class LoteListLoader : MonoBehaviour
         {
             GameObject btnObj = Instantiate(buttonPrefab, contentParent);
             LoteButtonData loteButtonData = btnObj.GetComponent<LoteButtonData>();
-            loteButtonData.lotesHandler = listaHandler;
+            loteButtonData.lotesHandler = lotesHandler;
 
             loteButtonData.hashID = animal.hashID;
-            loteButtonData.fileName = listaHandler.leilaoAtivo.ToLower() + ".json";
+            loteButtonData.fileName = lotesHandler.leilaoAtivo.ToLower() + ".json";
             loteButtonData.filePath = fileHandler.GetFolderPath("Leiloes") + loteButtonData.fileName;
 
             loteButtonData.LoteID = animal.loteID;
