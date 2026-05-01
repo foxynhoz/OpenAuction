@@ -297,7 +297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c45f8aae4114a4948808dfd29f3c6fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoteButtonData
+  lotesHandler: {fileID: 0}
+  hashID: 
   filePath: 
+  fileName: 
   LoteID: 0
   brinco: 0
   nome: 
@@ -580,8 +583,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -170.1, y: 0}
-  m_SizeDelta: {x: -380.269, y: 0}
+  m_AnchoredPosition: {x: -2.938385, y: 0}
+  m_SizeDelta: {x: 288.377, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8340198295860439551
 CanvasRenderer:
@@ -621,8 +624,8 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: EVENTO NAME HERE
 --- !u!1 &8752146681693190578

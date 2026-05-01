@@ -111,10 +111,9 @@ public class LotesHandler : MonoBehaviour
             loteInfoExtras_Field.text = "";
     }
 
-    public void setLoteManual(string loteID) //Atualiza no OBS o lote atual com os dados do lote encontrado
+    public void setLoteManual(string loteHashID) //Atualiza no OBS o lote atual com os dados do lote encontrado
     {
-        int SearchedloteID = int.Parse(loteID);
-        LoteData foundLote = lotes.Find(l => l.loteID == SearchedloteID);
+        LoteData foundLote = lotes.Find(l => l.hashID == loteHashID);
 
         if (foundLote != null)
         {
