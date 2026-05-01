@@ -91,7 +91,7 @@ public class LotesHandler : MonoBehaviour
                 producao = loteProducao_Field.text,
                 pai = lotePai_Field.text,
                 mae = loteMae_Field.text,
-                infoExtras = loteInfoExtras_Field.text,
+                infoExtras = loteInfoExtras_Field.text.Replace("\n", "").Replace("\r", ""),
             });
             SalvarLista();
             }

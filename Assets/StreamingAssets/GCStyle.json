@@ -1,0 +1,13 @@
+{
+    ""fontSize"": " + fontsize + @",
+    ""opacity"": 1.0,
+    ""GCwidth"": " + GCwidth + @",
+
+    ""paddingX"": " + paddingX + @",
+    ""paddingY"": " + paddingY + @",
+    ""borderRadius"": " + borderRadius + @",        
+    ""boxColor"": ""rgba("+ color.r + "," + color.g + "," + color.b + "," + color.a.ToString(CultureInfo.InvariantCulture) + @")"",
+        
+    ""separator"": ""•"",
+    ""sepSize"": " + sepSize + @"
+}

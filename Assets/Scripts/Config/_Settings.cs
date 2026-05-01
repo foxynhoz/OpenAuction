@@ -4,6 +4,8 @@ using System.IO;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using Unity.IO.LowLevel.Unsafe;
+using System.Collections.Generic;
 
 public class _Settings : MonoBehaviour
 {
@@ -39,12 +41,23 @@ public class _Settings : MonoBehaviour
     }
 }
 
+public class TimerManager : MonoBehaviour
+{
+    IEnumerator Timer(int delay)
+    {
+        yield return new WaitForSeconds(delay);
+    }
+}
+
 public class FileHandler
 {
+
     static string dataDir = Application.dataPath + "/LeilaoData/";
     static string leiloesDir = dataDir + "/Leiloes/";
     static string obsDir = dataDir + "/OBS_Stuff/";
     static string videosDir = dataDir + "/Videos/";
+
+    int tries = 0;
 
     public void UpdateFile(string fileName, string content, string folderName, bool DebugLog) //atualizar o arquivo passado com o conteúdo passado
     {
@@ -55,22 +68,76 @@ public class FileHandler
                 {
                     Directory.CreateDirectory(dataDir);
                 }
-                File.WriteAllText(dataDir + fileName, content);
-                break;
+                try
+                {
+                    File.WriteAllText(dataDir + fileName, content);
+                    tries = 0;
+                    break;
+                }
+                catch (IOException e)
+                {
+                    if (tries < 50)
+                    {
+                        tries++;
+                        Debug.LogError(tries + " Error writing file, Trying again...");
+                        UpdateFile(fileName, content, folderName, DebugLog);
+                    }
+                    else
+                    {
+                        Debug.LogError("Error writing file after 50 attempts: " + e.Message);
+                    }
+                    break;
+                }
             case "OBS_Stuff":
                 if (!Directory.Exists(obsDir))
                 {
                     Directory.CreateDirectory(obsDir);
                 }
-                File.WriteAllText(obsDir + fileName, content);
-                break;
+                try
+                {
+                    File.WriteAllText(obsDir + fileName, content);
+                    tries = 0;
+                    break;
+                }
+                catch (IOException e)
+                {
+                    if (tries < 50)
+                    {
+                        tries++;
+                        Debug.LogError(tries + " Error writing file, Trying again...");
+                        UpdateFile(fileName, content, folderName, DebugLog);
+                    }
+                    else
+                    {
+                        Debug.LogError("Error writing file after 50 attempts: " + e.Message);
+                    }
+                    break;
+                }
             case "Leiloes":
                 if (!Directory.Exists(leiloesDir))
                 {
                     Directory.CreateDirectory(leiloesDir);
                 }
-                File.WriteAllText(leiloesDir + fileName, content);
-                break;
+                try
+                {
+                    File.WriteAllText(leiloesDir + fileName, content);
+                    tries = 0;
+                    break;
+                }
+                catch (IOException e)
+                {
+                    if (tries < 50)
+                    {
+                        tries++;
+                        Debug.LogError(tries + " Error writing file, Trying again...");
+                        UpdateFile(fileName, content, folderName, DebugLog);
+                    }
+                    else
+                    {
+                        Debug.LogError("Error writing file after 50 attempts: " + e.Message);
+                    }
+                    break;
+                }
 
             case "Videos":
                 if (!Directory.Exists(videosDir))

@@ -3,10 +3,14 @@
     <html>
     <head>
     <meta charset="UTF-8">
-
-    <style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+	<style>
     body {
         font-family: 'Arial', sans-serif;
+		font-weight: bold;
         color: white;
 
         margin: 0;
@@ -16,19 +20,98 @@
         align-items: flex-end;
         justify-content: center;
     }
+	.GC{
+		position: absolute;
+		top: 10px;
+		
+		background-color: rgba(0,0,0,0);
+		width: 1920px;
+		height: 300px;
 
+		align-items: left;
+		justify-content: left;
+	}
+	
+	#LoteID
+	{
+		position: relative;
+		top: 10px;
+		
+		color: #000000;
+		font-size: 70px;
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+
+		padding: 10px;
+		border-radius: 8px;
+
+		text-align: center;
+		justify: center;
+	}
+	
+	#LoteName
+	{
+		text-transform: uppercase;
+		position: absolute;
+		top: 200px;
+		left: 10px;
+		
+		color: #000000;
+		font-size: 60px;
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+
+		padding: 10px;
+		border-radius: 8px;
+
+		text-align: left;
+	}
+	
+	#LanceTXT
+	{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		
+		color: #000000;
+		font-size: 100px;
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+
+		padding: 10px;
+		border-radius: 8px;
+
+		text-align: right;
+	}
+	.centavos {
+    font-size: 70px; /* menor que o valor principal */
+    opacity: 1.0;   /* opcional: deixar mais suave */
+}
+	
+	
     .BottomInfo {
-        position: absolute;
-        bottom: 20px;
+    position: absolute;
 
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
+    top: 90%;            /* posição vertical (ajusta aqui) */
+    left: 50%;
 
-        width: 1920px;
-        font-size: 20px;
-    }
+    transform: translate(-50%, -50%);
+
+    text-transform: uppercase;
+
+    background-color: rgba(255,0,0,0);
+    border-radius: 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    width: 1920px;
+    font-size: 20px;
+
+    padding: 10px 20px; /* melhor que height fixa */
+}
 
     /* caixas */
     .item {
@@ -52,13 +135,29 @@
     </head>
 
     <body>
+	<div class="GC">
+		<div id="LoteID"></div>
+		<div id="LoteName"></div>
+		<div id="LanceTXT"></div>
+		
+	</div>
+	<div class="BottomInfo"></div>
 
-    <div class="BottomInfo"></div>
+    
     <script>
     async function atualizar() {
         // 🔹 dados (texto)
         const dataResponse = await fetch("GCLote.json?t=" + Date.now());
         const data = await dataResponse.json();
+		
+		const LanceResponse = await fetch("LanceAtual.txt?t=" + Date.now());
+		const Lance = await LanceResponse.text();
+		
+		document.getElementById("LoteID").innerHTML = "LOTE:<br>" + data.loteID;
+		document.getElementById("LoteName").innerHTML = "NOME: " + data.nome;
+		
+		document.getElementById("LanceTXT").innerHTML =
+			`${Lance}<span class="centavos">,00</span>`;;
 
         // 🔹 estilo (visual)
         const styleResponse = await fetch("GCStyle.json?t=" + Date.now());
@@ -96,7 +195,7 @@
             div.innerText = texto;
 
             // 🎨 aplica estilo vindo do JSON
-            div.style.backgroundColor = style.bgColor;
+            div.style.backgroundColor = style.boxColor;
             div.style.borderRadius = style.borderRadius + "px";
             div.style.padding = style.paddingY + "px " + style.paddingX + "px";
             
@@ -107,7 +206,7 @@
 			
 			sep.style.fontSize = style.sepSize + "px";
 		});
-        // 🎨 estilo geral
+
         container.style.fontSize = style.fontSize + "px";
         container.style.opacity = style.opacity;
         container.style.width = style.GCwidth + "px";
