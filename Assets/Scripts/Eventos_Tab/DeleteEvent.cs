@@ -24,7 +24,7 @@ public class DeleteEvent : MonoBehaviour
                 {
                     File.Delete(filePath + ".meta");
                 }
-                catch (IOException ex)
+                catch
                 {
                     Debug.LogError($"There is no Meta File to be deleted:");
                 }
