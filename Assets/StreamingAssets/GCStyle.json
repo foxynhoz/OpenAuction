@@ -1,13 +1,14 @@
-{
-    ""fontSize"": " + fontsize + @",
-    ""opacity"": 1.0,
-    ""GCwidth"": " + GCwidth + @",
 
-    ""paddingX"": " + paddingX + @",
-    ""paddingY"": " + paddingY + @",
-    ""borderRadius"": " + borderRadius + @",        
-    ""boxColor"": ""rgba("+ color.r + "," + color.g + "," + color.b + "," + color.a.ToString(CultureInfo.InvariantCulture) + @")"",
-        
-    ""separator"": ""•"",
-    ""sepSize"": " + sepSize + @"
-}
+    {
+        "fontSize": 20,
+        "opacity": 1.0,
+        "GCwidth": 1000,
+
+        "paddingX": 0,
+        "paddingY": 0,
+        "borderRadius": 0,        
+        "boxColor": "rgba(1,0,0,0)",
+            
+        "separator": "•",
+        "sepSize": 20
+    }
