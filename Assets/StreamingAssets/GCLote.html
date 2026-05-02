@@ -1,221 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="UTF-8">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    
-	<style>
-    body {
-        font-family: 'Montserrat', sans-serif;
-		font-weight: 800;
-        color: white;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-        margin: 0;
-        height: 100vh;
+<style>
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: white;
 
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-    }
-	.GC{
-		position: absolute;
-		top: 10px;
-		
-		background-color: rgba(0,0,0,0);
-		width: 1920px;
-		height: 300px;
+    margin: 0;
+    height: 100vh;
 
-		align-items: left;
-		justify-content: left;
-	}
-	
-	#LoteID
-	{
-		position: relative;
-		top: 10px;
-		
-		color: #ffffff;
-		font-size: 70px;
-		font-family: 'Montserrat', sans-serif;
-		font-weight: 800;
-
-		padding: 10px;
-		border-radius: 8px;
-
-		text-align: center;
-		justify: center;
-	}
-	
-	#LoteName
-	{
-		text-transform: uppercase;
-		position: absolute;
-		top: 200px;
-		left: 10px;
-		
-		color: #f1f713;
-		font-size: 60px;
-		font-family: 'Montserrat', sans-serif;
-		font-weight: 800;
-
-		padding: 10px;
-		border-radius: 8px;
-
-		text-align: left;
-	}
-	
-	#LanceTXT
-	{
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		
-		color: #f1f713;
-		font-size: 100px;
-		font-family: 'Montserrat', sans-serif;
-		font-weight: 800;
-
-		padding: 10px;
-		border-radius: 8px;
-
-		text-align: right;
-	}
-	.centavos {
-    font-size: 70px; /* menor que o valor principal */
-    opacity: 1.0;   /* opcional: deixar mais suave */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
-	
-	
-    .BottomInfo {
+
+.GC{
     position: absolute;
+    top: 10px;
 
-    top: 90%;            /* posição vertical (ajusta aqui) */
+    width: 1920px;
+    height: 300px;
+}
+
+#LoteID {
+    position: relative;
+    top: 10px;
+
+    color: #ffffff;
+    font-size: 70px;
+    padding: 10px;
+    text-align: center;
+}
+
+#LoteName {
+    display: inline-block;
+    text-transform: uppercase;
+    position: absolute;
+    top: 200px;
+    left: 10px;
+
+    color: #f1f713;
+    font-size: 60px;
+    padding: 10px;
+}
+
+#LanceTXT {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    color: #f1f713;
+    font-size: 100px;
+    padding: 10px;
+
+    text-align: right;
+
+    display: inline-block;        /* 🔥 importante */
+    transform-origin: center;     /* 🔥 animação suave */
+}
+
+.centavos {
+    font-size: 70px;
+}
+
+/* 🔥 animação */
+@keyframes destaqueLance {
+    0%   { transform: scale(1); color: white; }
+    50%  { transform: scale(1.2); color: lime; }
+    100% { transform: scale(1); color: #f1f713; }
+}
+
+.animar {
+    animation: destaqueLance 0.3s ease;
+}
+
+.BottomInfo {
+    position: absolute;
+    top: 90%;
     left: 50%;
-
     transform: translate(-50%, -50%);
 
     text-transform: uppercase;
-
-    background-color: rgba(255,0,0,0);
-    border-radius: 20px;
 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 
-	color: #354355;
+    color: #354355;
     width: 1920px;
     font-size: 20px;
 
-    padding: 10px 20px; /* melhor que height fixa */
+    padding: 10px 20px;
 }
 
-    /* caixas */
-    .item {
-        background-color: 0;
-        padding: 0;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
+.item {
+    display: flex;
+    align-items: center;
+}
+
+.sep {
+    transform: scale(2.0);
+    color: #354355;
+    margin: 0 10px;
+    font-size: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="GC">
+    <div id="LoteID"></div>
+    <div id="LoteName"></div>
+    <div id="LanceTXT"></div>
+</div>
+
+<div class="BottomInfo"></div>
+
+<script>
+let ultimoLance = null;
+
+function atualizarLance(Lance) {
+    const el = document.getElementById("LanceTXT");
+
+    if (!Lance || Lance.trim() === "") {
+        el.innerHTML = "";
+        ultimoLance = null;
+        return;
     }
 
-    /* separador (AGORA FORA da caixa) */
-    .sep {
-	    transform: scale(2.0);
-        color: #354355;
-        margin: 0 10px;
-        font-size: 15px;
-        opacity: 1;
+    el.innerHTML = `${Lance}<span class="centavos">,00</span>`;
+
+    if (ultimoLance !== Lance) {
+        el.classList.remove("animar");
+        void el.offsetWidth; // reset animação
+        el.classList.add("animar");
     }
-    </style>
 
-    </head>
+    ultimoLance = Lance;
+}
 
-    <body>
-	<div class="GC">
-		<div id="LoteID"></div>
-		<div id="LoteName"></div>
-		<div id="LanceTXT"></div>
-		
-	</div>
-	<div class="BottomInfo"></div>
+async function atualizar() {
 
-    
-    <script>
-    async function atualizar() {
-        // 🔹 dados (texto)
-        const dataResponse = await fetch("GCLote.json?t=" + Date.now());
-        const data = await dataResponse.json();
-		
-		const LanceResponse = await fetch("LanceAtual.txt?t=" + Date.now());
-		const Lance = await LanceResponse.text();
-		
-		document.getElementById("LoteID").innerHTML = "LOTE:<br>" + data.loteID;
-		document.getElementById("LoteName").innerHTML = "NOME: " + data.nome;
-		
-		document.getElementById("LanceTXT").innerHTML =
-		Lance
-        ? `${Lance}<span class="centavos">,00</span>`
-        : "";
+    const dataResponse = await fetch("GCLote.json?t=" + Date.now());
+    const data = await dataResponse.json();
 
-        // 🔹 estilo (visual)
-        const styleResponse = await fetch("GCStyle.json?t=" + Date.now());
-        const style = await styleResponse.json();
+    const LanceResponse = await fetch("LanceAtual.txt?t=" + Date.now());
+    const Lance = await LanceResponse.text();
 
-        const container = document.querySelector(".BottomInfo");
+    document.getElementById("LoteID").innerHTML = "LOTE:<br>" + data.loteID;
+    document.getElementById("LoteName").innerHTML = "NOME: " + data.nome;
 
-        const itens = [
-            data.idade,
-            data.sexo,
-            data.peso,
-            data.sangue,
-            data.nascimento,
-            data.ultimoParto,
-            data.prevParto,
-            data.producao,
-            data.mae,
-            data.pai,
-            data.infoExtras
-        ].filter(v => v && v.trim() !== "");
+    // 🔥 AGORA USANDO A FUNÇÃO CORRETA
+    atualizarLance(Lance);
 
-        container.innerHTML = "";
+    const styleResponse = await fetch("GCStyle.json?t=" + Date.now());
+    const style = await styleResponse.json();
 
-        itens.forEach((texto, index) => {
+    const container = document.querySelector(".BottomInfo");
 
-            if (index > 0) {
-                const sep = document.createElement("span");
-                sep.className = "sep";
-                sep.innerText = style.separator || "•";
-                container.appendChild(sep);
-            }
+    const itens = [
+        data.idade,
+        data.sexo,
+        data.peso,
+        data.sangue,
+        data.nascimento,
+        data.ultimoParto,
+        data.prevParto,
+        data.producao,
+        data.mae,
+        data.pai,
+        data.infoExtras
+    ].filter(v => v && v.trim() !== "");
 
-            const div = document.createElement("div");
-            div.className = "item";
-            div.innerText = texto;
+    container.innerHTML = "";
 
-            // 🎨 aplica estilo vindo do JSON
-            div.style.backgroundColor = style.boxColor;
-            div.style.borderRadius = style.borderRadius + "px";
-            div.style.padding = style.paddingY + "px " + style.paddingX + "px";
-            
-            container.appendChild(div);
-        });
-		
-		document.querySelectorAll(".sep").forEach(sep => {
-			
-			sep.style.fontSize = style.sepSize + "px";
-		});
+    itens.forEach((texto, index) => {
 
-        container.style.fontSize = style.fontSize + "px";
-        container.style.opacity = style.opacity;
-        container.style.width = style.GCwidth + "px";
-    }
-    setInterval(atualizar, 200);
-    </script>
+        if (index > 0) {
+            const sep = document.createElement("span");
+            sep.className = "sep";
+            sep.innerText = style.separator || "•";
+            container.appendChild(sep);
+        }
 
-    </body>
-    </html>
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerText = texto;
+
+        div.style.backgroundColor = style.boxColor;
+        div.style.borderRadius = style.borderRadius + "px";
+        div.style.padding = style.paddingY + "px " + style.paddingX + "px";
+
+        container.appendChild(div);
+    });
+
+    document.querySelectorAll(".sep").forEach(sep => {
+        sep.style.fontSize = style.sepSize + "px";
+    });
+
+    container.style.fontSize = style.fontSize + "px";
+    container.style.opacity = style.opacity;
+    container.style.width = style.GCwidth + "px";
+}
+
+// 🔥 pode ajustar se quiser mais suave
+setInterval(atualizar, 300);
+</script>
+
+</body>
+</html>
