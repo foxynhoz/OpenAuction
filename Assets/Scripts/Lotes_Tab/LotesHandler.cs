@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Timeline.AnimationPlayableAsset;
 
 public class LotesHandler : MonoBehaviour
 {
@@ -111,19 +113,62 @@ public class LotesHandler : MonoBehaviour
             loteInfoExtras_Field.text = "";
     }
 
-    public void setLoteManual(string loteHashID) //Atualiza no OBS o lote atual com os dados do lote encontrado
+    List<LoteData> loteAtual;
+    int indexAtual = 0;
+    [SerializeField] InputField loopInterval;
+    public bool loopisOn = false;
+    public void setLoteManual(string loteHashID)
     {
         LoteData foundLote = lotes.Find(l => l.hashID == loteHashID);
 
         if (foundLote != null)
         {
             Debug.Log("LoteData encontrado: " + foundLote.nome);
-            SalvarLoteEncontrado(foundLote);
+
+            loteAtual = lotes
+                .Where(l => l.loteID == foundLote.loteID)
+                .ToList();
+
+            indexAtual = 0;
+
+            // 🔥 sempre cancela qualquer loop anterior
+            CancelInvoke(nameof(LoopLote));
+
+            if (loteAtual.Count == 1)
+            {
+                // 👉 só um item → salva uma vez e acabou
+                SalvarLoteEncontrado(loteAtual[0]);
+            }
+            else if (loteAtual.Count > 1)
+            {
+                // 👉 mais de um → começa o loop
+                if (int.TryParse(loopInterval.text, out int interval))
+                {
+                    InvokeRepeating(nameof(LoopLote), 0f, interval);
+                }
+                else
+                {
+                    Debug.LogError("Intervalo de loop inválido. Defina um valor numérico.");
+                }
+            }
         }
         else
         {
             Debug.Log("LoteData não encontrado.");
         }
+    }
+
+    void LoopLote()
+    {
+        if (loteAtual == null || loteAtual.Count == 0 || !loopisOn)
+            return;
+
+        var lote = loteAtual[indexAtual];
+
+        SalvarLoteEncontrado(lote);
+
+        // 🔄 ciclo infinito
+        indexAtual = (indexAtual + 1) % loteAtual.Count;
     }
 
     public void SalvarLoteEncontrado(LoteData foundLote)
@@ -286,7 +331,6 @@ public class LotesHandler : MonoBehaviour
             Debug.LogError("Manager não encontrado");
             return;
         }
-
 
         data.lotesHandler.lotes.RemoveAll(l => l.hashID == data.hashID);
 
