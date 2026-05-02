@@ -7,7 +7,8 @@ public class Lance_Manager : MonoBehaviour
 {
     FileHandler fileHandler = new FileHandler();
     [SerializeField] ErrorHandler ErrorHandler;
-    
+    [SerializeField] LotesHandler lotesHandler;
+
     public Text LanceAtual_TXT;
     public Text LanceAnterior_TXT;
 
@@ -72,6 +73,7 @@ public class Lance_Manager : MonoBehaviour
     public void Vendido()
     {
         LoteData emptyLoteData = new LoteData();
+        lotesHandler.loopisOn = false;
      
         LanceValue = 0f;
         I_Lance.text = (LanceValue + entreLance).ToString();
