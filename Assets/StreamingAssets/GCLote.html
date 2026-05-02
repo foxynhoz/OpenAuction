@@ -9,8 +9,8 @@
     
 	<style>
     body {
-        font-family: 'Arial', sans-serif;
-		font-weight: bold;
+        font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
         color: white;
 
         margin: 0;
@@ -37,7 +37,7 @@
 		position: relative;
 		top: 10px;
 		
-		color: #000000;
+		color: #ffffff;
 		font-size: 70px;
 		font-family: 'Montserrat', sans-serif;
 		font-weight: 800;
@@ -56,7 +56,7 @@
 		top: 200px;
 		left: 10px;
 		
-		color: #000000;
+		color: #f1f713;
 		font-size: 60px;
 		font-family: 'Montserrat', sans-serif;
 		font-weight: 800;
@@ -73,7 +73,7 @@
 		top: 10px;
 		right: 10px;
 		
-		color: #000000;
+		color: #f1f713;
 		font-size: 100px;
 		font-family: 'Montserrat', sans-serif;
 		font-weight: 800;
@@ -107,6 +107,7 @@
     justify-content: center;
     align-items: center;
 
+	color: #354355;
     width: 1920px;
     font-size: 20px;
 
@@ -125,7 +126,7 @@
     /* separador (AGORA FORA da caixa) */
     .sep {
 	    transform: scale(2.0);
-        color: white;
+        color: #354355;
         margin: 0 10px;
         font-size: 15px;
         opacity: 1;
@@ -157,7 +158,9 @@
 		document.getElementById("LoteName").innerHTML = "NOME: " + data.nome;
 		
 		document.getElementById("LanceTXT").innerHTML =
-			`${Lance}<span class="centavos">,00</span>`;;
+		Lance
+        ? `${Lance}<span class="centavos">,00</span>`
+        : "";
 
         // 🔹 estilo (visual)
         const styleResponse = await fetch("GCStyle.json?t=" + Date.now());
@@ -211,7 +214,7 @@
         container.style.opacity = style.opacity;
         container.style.width = style.GCwidth + "px";
     }
-    setInterval(atualizar, 500);
+    setInterval(atualizar, 200);
     </script>
 
     </body>
