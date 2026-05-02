@@ -14,6 +14,10 @@ public class LoteListLoader : MonoBehaviour
 
     public void RefreshLoteList()
     { 
+        if(string.IsNullOrEmpty(lotesHandler.leilaoAtivo))
+        {
+            return;
+        }
         lotesHandler.CarregarLista(
             lotesHandler.leilaoAtivo, fileHandler.GetFolderPath("Leiloes") + lotesHandler.leilaoAtivo.ToLower() + ".json");
         LoadLoteJSONButtons();
