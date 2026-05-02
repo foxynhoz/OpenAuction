@@ -27,6 +27,7 @@ public class LoteButtonData : MonoBehaviour
     public void SetActiveLote()
     {
         LotesHandler lotesHandler = FindObjectOfType<LotesHandler>();
+        lotesHandler.loopisOn = true;
         lotesHandler.setLoteManual(hashID); // Define o lote ativo usando o LoteID do botão
         Debug.Log("Botão clicado! Lote ID: " + LoteID);
     }
